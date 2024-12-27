@@ -1,2 +1,2 @@
-# Repository-TicTacToe
-TicTacToe - TicTacToe Game Website
+# TicTacToe Game Website
+The README file will soon be updated.
