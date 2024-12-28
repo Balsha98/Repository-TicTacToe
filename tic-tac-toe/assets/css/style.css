@@ -3,6 +3,10 @@
 
 /* VARIABLES */
 :root {
+    --white: #fff;
+    --gray-shade: #212529;
+    --gradient-red: #ffa8a8;
+    --gradient-indigo: #91a7ff;
 }
 
 /* GENERAL SELECTORS */
@@ -10,6 +14,7 @@
     margin: 0;
     padding: 0;
     font-family: "Manrope", sans-serif;
+    color: var(--white);
     box-sizing: border-box;
 }
 
@@ -19,14 +24,26 @@ html {
 
 body {
     height: 100vh;
+    background: linear-gradient(to left top, var(--gradient-red), var(--gradient-indigo));
 }
 
 /* MAIN CONTAINER */
 .main-container {
+    position: relative;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     width: 100%;
     height: 100%;
+}
+
+.main-container::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    width: 0.2rem;
+    height: 100%;
+    background-color: var(--white);
+    transform: translateX(-50%);
 }
 
 .main-container > section {
@@ -60,7 +77,19 @@ body {
 }
 
 .game-board-header p {
+    position: relative;
     font-size: 2rem;
+}
+
+.game-board-header p::after {
+    content: "";
+    position: absolute;
+    bottom: -0.4rem;
+    left: 0;
+    width: 6.4rem;
+    height: 0.2rem;
+    background-color: var(--white);
+    border-radius: 0.4rem 0.4rem 0 0;
 }
 
 .game-board-header span {
@@ -72,7 +101,7 @@ body {
 .div-game-board {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 0.8rem;
+    gap: 1.2rem;
     width: fit-content;
 }
 
@@ -81,8 +110,10 @@ body {
     align-items: center;
     justify-content: center;
     width: 12rem;
-    color: white;
-    background-color: black;
+    color: var(--white);
+    background: linear-gradient(to right top, var(--gradient-red), var(--gradient-indigo));
+    box-shadow: inset 0 0 0 0.2rem var(--white);
+    border-radius: 0.4rem;
     aspect-ratio: 1 / 1;
     cursor: pointer;
 }
