@@ -1,0 +1,33 @@
+/* IMPORTS */
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap");
+
+/* VARIABLES */
+:root {
+}
+
+/* GENERAL SELECTORS */
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "Manrope", sans-serif;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 10px;
+}
+
+/* GAME-BOARD DIV */
+.div-game-board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.8rem;
+    width: fit-content;
+}
+
+.div-game-square {
+    width: 100px;
+    border: 0.2rem solid black;
+    aspect-ratio: 1 / 1;
+    cursor: pointer;
+}
