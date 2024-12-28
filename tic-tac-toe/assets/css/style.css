@@ -17,6 +17,57 @@ html {
     font-size: 10px;
 }
 
+body {
+    height: 100vh;
+}
+
+/* MAIN CONTAINER */
+.main-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    width: 100%;
+    height: 100%;
+}
+
+.main-container > section {
+    position: relative;
+}
+
+/* DASHBOARD SECTION */
+.section-dashboard {
+}
+
+/* GAME-BOARD SECTION */
+.section-game-board {
+}
+
+/* GAME-BOARD CONTAINER DIV */
+.div-game-board-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+    transform: translate(-50%, -50%);
+}
+
+/* GAME-BOARD HEADER */
+.game-board-header {
+    display: inherit;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.game-board-header p {
+    font-size: 2rem;
+}
+
+.game-board-header span {
+    font-size: 2.4rem;
+    font-weight: 600;
+}
+
 /* GAME-BOARD DIV */
 .div-game-board {
     display: grid;
@@ -29,7 +80,7 @@ html {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100px;
+    width: 12rem;
     color: white;
     background-color: black;
     aspect-ratio: 1 / 1;
@@ -37,6 +88,6 @@ html {
 }
 
 .div-game-square ion-icon {
-    font-size: 6.4rem;
+    font-size: 8rem;
     color: inherit;
 }

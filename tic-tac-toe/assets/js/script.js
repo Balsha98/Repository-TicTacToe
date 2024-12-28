@@ -1,6 +1,7 @@
 "use strict";
 
 // ***** DOM ELEMENTS ***** //
+const currMoveSpan = document.querySelector(".span-current-move");
 const gameSquares = document.querySelectorAll(".div-game-square");
 
 // ***** GLOBAL VARIABLES ***** //
@@ -26,6 +27,9 @@ const markSquare = function () {
             // Alter the global variables.
             currMove = switchMove(currMove);
             gameOver = checkForWinner(fields);
+
+            // Alter the current move visual.
+            currMoveSpan.textContent = currMove.toUpperCase();
         }
     }
 };
