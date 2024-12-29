@@ -146,6 +146,23 @@ const updateScoreBoard = function (winner) {
     localStorage.setItem(`score_${winner}`, +winningScore);
 };
 
+const loadGameHistory = function () {
+    if (!localStorage.getItem("game_history")) return;
+    JSON.parse(localStorage.getItem("game_history")).forEach((object) => {
+        const listItem = `
+            <li class="score-history-list-item">
+                <div class="div-score-history-info">
+                    <span>${object["id"]}.</span>
+                    <p>Player <ion-icon name="${switchIcon(object["winner"])}-outline"></ion-icon> won this game.</p>
+                </div>
+                <p>${formatGameDate(object["date"])}</p>
+            </li>
+        `;
+
+        scoreHistoryList.insertAdjacentHTML("beforeend", listItem);
+    });
+};
+
 const updateGameHistory = function (winner) {
     const gameHistory = JSON.parse(localStorage.getItem("game_history")) ?? [];
     const newUpdate = { id: gameHistory.length + 1, winner: winner, date: new Date().getTime() };
@@ -186,6 +203,8 @@ const resetGameFieldsArray = function () {
         }
     }
 };
+
+loadGameHistory();
 
 // ***** DOM ELEMENTS ***** //
 newGameBtn.addEventListener("click", function () {
