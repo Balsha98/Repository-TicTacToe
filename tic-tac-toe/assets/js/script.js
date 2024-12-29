@@ -1,7 +1,7 @@
 "use strict";
 
 // ***** DOM ELEMENTS ***** //
-const currMoveSpan = document.querySelector(".span-current-move");
+const currMoveIcon = document.querySelector(".icon-current-move");
 const gameSquares = document.querySelectorAll(".div-game-square");
 
 // ***** GLOBAL VARIABLES ***** //
@@ -15,27 +15,35 @@ const fields = [
 
 // ***** DOM ELEMENTS ***** //
 const markSquare = function () {
-    if (!gameOver) {
-        if (this.innerHTML === "") {
-            const currIcon = currMove === "x" ? "close" : "radio-button-off";
-            this.innerHTML = `<ion-icon name="${currIcon}-outline"></ion-icon>`;
+    // Guard clause.
+    if (gameOver) return;
 
-            // Get clicked square coordinates.
-            const { row, col } = getSquarePosition(this);
-            fields[row][col] = currMove;
+    // Guard clause.
+    if (this.innerHTML !== "") return;
 
-            // Alter the global variables.
-            currMove = switchMove(currMove);
-            gameOver = checkForWinner(fields);
+    const currIcon = switchIcon(currMove);
+    this.innerHTML = `<ion-icon name="${currIcon}-outline"></ion-icon>`;
 
-            // Alter the current move visual.
-            currMoveSpan.textContent = currMove.toUpperCase();
-        }
+    // Get clicked square coordinates.
+    const { row, col } = getSquarePosition(this);
+    fields[row][col] = currMove;
+
+    // Alter the global variables.
+    currMove = switchMove(currMove);
+    if (checkForWinner(fields)) {
+        gameOver = checkForWinner(fields);
     }
+
+    // Alter the current move visual.
+    currMoveIcon.setAttribute("name", `${switchIcon(currMove)}-outline`);
 };
 
 const switchMove = function (move) {
     return move === "x" ? "o" : "x";
+};
+
+const switchIcon = function (move) {
+    return move === "x" ? "close" : "radio-button-off";
 };
 
 const getSquarePosition = function (square) {

@@ -50,12 +50,105 @@ body {
     position: relative;
 }
 
-/* DASHBOARD SECTION */
-.section-dashboard {
+/* DASHBOARD HEADER */
+.dashboard-header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.4rem;
+    padding: 1.6rem;
 }
 
-/* GAME-BOARD SECTION */
-.section-game-board {
+.dashboard-header img {
+    height: 3.2rem;
+}
+
+.dashboard-header h1 {
+    font-size: 2.4rem;
+}
+
+/* LEADERBOARD DIV */
+.div-leaderboard {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 2.4rem;
+    width: 48rem;
+    aspect-ratio: 1 / 1;
+    border-radius: 0.4rem;
+    transform: translate(-50%, -50%);
+}
+
+/* LEADERBOARD HEADER */
+.leaderboard-header {
+    text-align: center;
+}
+
+.leaderboard-header h2 {
+    font-size: 2.4rem;
+}
+
+.leaderboard-header p {
+    font-size: 1.6rem;
+}
+
+/* SCOREBOARD CONTAINER DIV */
+.div-scoreboard-container > div {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+    justify-items: center;
+}
+
+/* SCORE CONTAINER DIV */
+.div-score-container p {
+    font-size: 8rem;
+}
+
+.div-score-container img {
+    height: 4.8rem;
+}
+
+/* SCORE LABELS CONTAINER DIV */
+.div-score-labels-container ion-icon {
+    font-size: 4rem;
+}
+
+/* SCORE HISTORY CONTAINER DIV */
+.div-game-history-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.div-game-history-container h3 {
+    font-size: 1.8rem;
+    font-weight: 500;
+    text-align: center;
+}
+
+/* SCORE HISTORY LIST */
+.score-history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    list-style: none;
+}
+
+.score-history-list-item {
+    display: inherit;
+    justify-content: space-between;
+    padding: 1.2rem;
+    font-size: 1.6rem;
+    box-shadow: inset 0 0 0 0.2rem var(--white);
+    border-radius: 0.4rem;
+}
+
+.score-history-list-item div {
+    display: inherit;
+    gap: 0.8rem;
 }
 
 /* GAME-BOARD CONTAINER DIV */
@@ -92,9 +185,8 @@ body {
     border-radius: 0.4rem 0.4rem 0 0;
 }
 
-.game-board-header span {
-    font-size: 2.4rem;
-    font-weight: 600;
+.game-board-header ion-icon {
+    font-size: 3.2rem;
 }
 
 /* GAME-BOARD DIV */
@@ -110,11 +202,11 @@ body {
     align-items: center;
     justify-content: center;
     width: 12rem;
+    aspect-ratio: 1 / 1;
     color: var(--white);
     background: linear-gradient(to right top, var(--gradient-red), var(--gradient-indigo));
     box-shadow: inset 0 0 0 0.2rem var(--white);
     border-radius: 0.4rem;
-    aspect-ratio: 1 / 1;
     cursor: pointer;
 }
 

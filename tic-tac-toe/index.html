@@ -14,13 +14,46 @@
 <body>
     <main class="main-container">
         <section class="section-dashboard">
-            <h1>Welcome to TicTacToe!</h1>
+            <header class="dashboard-header">
+                <img src="assets/media/site-logo.png" alt="Logo">
+                <h1>TicTacToe</h1>
+            </header>
+            <div class="div-leaderboard">
+                <header class="leaderboard-header">
+                    <h2>Welcome to TicTacToe!</h2>
+                    <p>Start playing and keep track of the overall history.</p>
+                </header>
+                <div class="div-scoreboard-container">
+                    <div class="div-score-container">
+                        <p class="score-label-x">0</p>
+                        <img src="assets/media/score-colon.png" alt="Colon Image">
+                        <p class="score-label-o">0</p>
+                    </div>
+                    <div class="div-score-labels-container">
+                        <ion-icon name="close-outline"></ion-icon>
+                        <span>&nbsp;</span>
+                        <ion-icon name="radio-button-off-outline"></ion-icon>
+                    </div>
+                </div>
+                <div class="div-game-history-container">
+                    <h3>Game History</h3>
+                    <ul class="score-history-list">
+                        <li class="score-history-list-item">
+                            <div>
+                                <span>1.</span>
+                                <p>Result</p>
+                            </div>
+                            <p>Date</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </section>
         <section class="section-game-board">
             <div class="div-game-board-container">
                 <header class="game-board-header">
                     <p>Current Move:</p>
-                    <span class="span-current-move">X</span>
+                    <ion-icon class="icon-current-move" name="close-outline"></ion-icon>
                 </header>
                 <div class="div-game-board">
                     <div class="div-game-square" data-row="0" data-col="0"></div>
