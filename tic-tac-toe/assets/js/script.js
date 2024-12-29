@@ -3,16 +3,23 @@
 // ***** DOM ELEMENTS ***** //
 const gameHistoryPopup = document.querySelector(".div-game-history-popup");
 const closePopupBtn = document.querySelector(".btn-close-popup");
+const scoreHistoryList = document.querySelector(".score-history-list");
 const confirmationPopup = document.querySelector(".div-confirmation-popup");
 const confirmationIcon = document.querySelector(".icon-confirmation");
 const newGameBtn = document.querySelector(".btn-new-game");
 const popupOverlayDiv = document.querySelector(".div-popup-overlay");
 const gameHistoryBtn = document.querySelector(".btn-game-history");
+const scoreLabelX = document.querySelector(".score-label-x");
+const scoreLabelO = document.querySelector(".score-label-o");
 const currMoveIcon = document.querySelector(".icon-current-move");
 const gameSquares = document.querySelectorAll(".div-game-square");
 
 // ***** GLOBAL VARIABLES ***** //
 let gameOver = false;
+let scoreX = localStorage.getItem("score_x") ?? 0;
+scoreLabelX.textContent = scoreX;
+let scoreO = localStorage.getItem("score_o") ?? 0;
+scoreLabelO.textContent = scoreO;
 let currMove = "x";
 const fields = [
     [1, 1, 1],
@@ -46,12 +53,16 @@ const markSquare = function () {
     const { row, col } = getSquarePosition(this);
     fields[row][col] = currMove;
 
-    // Alter the global variables.
-    currMove = switchMove(currMove);
+    // Check for game result.
     if (checkForWinner(fields)) {
         gameOver = checkForWinner(fields);
         toggleConfirmationPopup(currIcon);
+        updateScoreBoard(currMove);
+        return;
     }
+
+    // Alter global variable.
+    currMove = switchMove(currMove);
 
     // Alter the current move visual.
     currMoveIcon.setAttribute("name", `${switchIcon(currMove)}-outline`);
@@ -67,6 +78,12 @@ const switchIcon = function (move) {
 
 const getSquarePosition = function (square) {
     return { row: square.dataset.row, col: square.dataset.col };
+};
+
+const updateScoreBoard = function (winner) {
+    const winningScore = winner === "x" ? ++scoreX : ++scoreO;
+    document.querySelector(`.score-label-${winner}`).textContent = winningScore;
+    localStorage.setItem(`score_${winner}`, winningScore);
 };
 
 const checkForWinner = function (fields) {
@@ -128,8 +145,28 @@ const checkDiagonalFields = function (fields) {
     return false;
 };
 
+const resetGameVisuals = function () {
+    currMove = "x";
+    currMoveIcon.setAttribute("name", `${switchIcon(currMove)}-outline`);
+    gameSquares.forEach((square) => (square.innerHTML = ""));
+
+    resetFieldsArray();
+    gameOver = false;
+};
+
+const resetFieldsArray = function () {
+    for (let i in fields) {
+        for (let j in fields[i]) {
+            fields[i][j] = 1;
+        }
+    }
+};
+
 // ***** DOM ELEMENTS ***** //
-newGameBtn.addEventListener("click", toggleConfirmationPopup);
+newGameBtn.addEventListener("click", function () {
+    toggleConfirmationPopup();
+    resetGameVisuals();
+});
 
 [gameHistoryBtn, closePopupBtn].forEach((btn) => {
     btn.addEventListener("click", toggleGameHistoryPopup);
