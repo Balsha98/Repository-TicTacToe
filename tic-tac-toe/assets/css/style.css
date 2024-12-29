@@ -179,9 +179,22 @@ body {
     border-radius: inherit;
 }
 
-.score-history-list-item div {
+.div-score-history-info {
     display: inherit;
-    gap: 0.8rem;
+}
+
+.div-score-history-info span {
+    width: 2.4rem;
+}
+
+.div-score-history-info p {
+    display: inherit;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.div-score-history-info ion-icon {
+    font-size: 2rem;
 }
 
 /* POPUP OVERLAY */

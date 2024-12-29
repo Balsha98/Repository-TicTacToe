@@ -16,9 +16,9 @@ const gameSquares = document.querySelectorAll(".div-game-square");
 
 // ***** GLOBAL VARIABLES ***** //
 let gameOver = false;
-let scoreX = localStorage.getItem("score_x") ?? 0;
+let scoreX = +localStorage.getItem("score_x") ?? 0;
 scoreLabelX.textContent = scoreX;
-let scoreO = localStorage.getItem("score_o") ?? 0;
+let scoreO = +localStorage.getItem("score_o") ?? 0;
 scoreLabelO.textContent = scoreO;
 let currMove = "x";
 const fields = [
@@ -57,6 +57,7 @@ const markSquare = function () {
     if (checkForWinner(fields)) {
         gameOver = checkForWinner(fields);
         toggleConfirmationPopup(currIcon);
+        updateGameHistory(currMove);
         updateScoreBoard(currMove);
         return;
     }
@@ -78,12 +79,6 @@ const switchIcon = function (move) {
 
 const getSquarePosition = function (square) {
     return { row: square.dataset.row, col: square.dataset.col };
-};
-
-const updateScoreBoard = function (winner) {
-    const winningScore = winner === "x" ? ++scoreX : ++scoreO;
-    document.querySelector(`.score-label-${winner}`).textContent = winningScore;
-    localStorage.setItem(`score_${winner}`, winningScore);
 };
 
 const checkForWinner = function (fields) {
@@ -145,16 +140,46 @@ const checkDiagonalFields = function (fields) {
     return false;
 };
 
+const updateScoreBoard = function (winner) {
+    const winningScore = winner === "x" ? ++scoreX : ++scoreO;
+    document.querySelector(`.score-label-${winner}`).textContent = winningScore;
+    localStorage.setItem(`score_${winner}`, +winningScore);
+};
+
+const updateGameHistory = function (winner) {
+    const gameHistory = JSON.parse(localStorage.getItem("game_history")) ?? [];
+    const newUpdate = { id: gameHistory.length + 1, winner: winner, date: new Date().getTime() };
+    const listItem = `
+        <li class="score-history-list-item">
+            <div class="div-score-history-info">
+                <span>${newUpdate["id"]}.</span>
+                <p>Player <ion-icon name="${switchIcon(winner)}-outline"></ion-icon> won this game.</p>
+            </div>
+            <p>${formatGameDate(newUpdate["date"])}</p>
+        </li>
+    `;
+
+    gameHistory.push(newUpdate);
+    localStorage.setItem("game_history", JSON.stringify(gameHistory));
+    scoreHistoryList.insertAdjacentHTML("beforeend", listItem);
+};
+
+const formatGameDate = function (timestamp) {
+    return Intl.DateTimeFormat("en-US", {
+        dateStyle: "short",
+    }).format(timestamp);
+};
+
 const resetGameVisuals = function () {
     currMove = "x";
     currMoveIcon.setAttribute("name", `${switchIcon(currMove)}-outline`);
     gameSquares.forEach((square) => (square.innerHTML = ""));
 
-    resetFieldsArray();
+    resetGameFieldsArray();
     gameOver = false;
 };
 
-const resetFieldsArray = function () {
+const resetGameFieldsArray = function () {
     for (let i in fields) {
         for (let j in fields[i]) {
             fields[i][j] = 1;
