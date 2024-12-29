@@ -12,6 +12,15 @@
 </head>
 
 <body>
+    <div class="div-confirmation-popup hide-up">
+        <div class="div-confirmation-popup-content">
+            <h2>Player <ion-icon name="close"></ion-icon> Wins!</h2>
+            <button class="btn-new-game">New Game</button>
+        </div>
+    </div>
+
+    <div class="div-popup-overlay hide-down">&nbsp;</div>
+
     <main class="main-container">
         <section class="section-dashboard">
             <header class="dashboard-header">
@@ -38,13 +47,7 @@
                 <div class="div-game-history-container">
                     <h3>Game History</h3>
                     <ul class="score-history-list">
-                        <li class="score-history-list-item">
-                            <div>
-                                <span>1.</span>
-                                <p>Result</p>
-                            </div>
-                            <p>Date</p>
-                        </li>
+                        <!-- DYNAMICALLY GENERATED -->
                     </ul>
                 </div>
             </div>

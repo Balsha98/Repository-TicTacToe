@@ -1,6 +1,7 @@
 "use strict";
 
 // ***** DOM ELEMENTS ***** //
+const confirmationPopup = document.querySelector(".div-confirmation-popup");
 const currMoveIcon = document.querySelector(".icon-current-move");
 const gameSquares = document.querySelectorAll(".div-game-square");
 
