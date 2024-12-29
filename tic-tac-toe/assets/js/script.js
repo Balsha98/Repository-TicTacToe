@@ -2,6 +2,9 @@
 
 // ***** DOM ELEMENTS ***** //
 const confirmationPopup = document.querySelector(".div-confirmation-popup");
+const confirmationIcon = document.querySelector(".icon-confirmation");
+const newGameBtn = document.querySelector(".btn-new-game");
+const popupOverlayDiv = document.querySelector(".div-popup-overlay");
 const currMoveIcon = document.querySelector(".icon-current-move");
 const gameSquares = document.querySelectorAll(".div-game-square");
 
@@ -15,6 +18,12 @@ const fields = [
 ];
 
 // ***** DOM ELEMENTS ***** //
+const toggleConfirmationPopup = function (icon = "close") {
+    confirmationIcon.setAttribute("name", `${icon}-outline`);
+    confirmationPopup.classList.toggle("hide-up");
+    popupOverlayDiv.classList.toggle("hide-down");
+};
+
 const markSquare = function () {
     // Guard clause.
     if (gameOver) return;
@@ -33,6 +42,7 @@ const markSquare = function () {
     currMove = switchMove(currMove);
     if (checkForWinner(fields)) {
         gameOver = checkForWinner(fields);
+        toggleConfirmationPopup(currIcon);
     }
 
     // Alter the current move visual.
@@ -111,6 +121,10 @@ const checkDiagonalFields = function (fields) {
 };
 
 // ***** DOM ELEMENTS ***** //
+newGameBtn.addEventListener("click", function () {
+    toggleConfirmationPopup();
+});
+
 gameSquares.forEach((gameSquare) => {
     gameSquare.addEventListener("click", markSquare);
 });
