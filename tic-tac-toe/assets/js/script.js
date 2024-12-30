@@ -9,6 +9,7 @@ const confirmationIcon = document.querySelector(".icon-confirmation");
 const newGameBtn = document.querySelector(".btn-new-game");
 const popupOverlayDiv = document.querySelector(".div-popup-overlay");
 const gameHistoryBtn = document.querySelector(".btn-game-history");
+const resetStorageBtn = document.querySelector(".btn-reset-storage");
 const scoreLabelX = document.querySelector(".score-label-x");
 const scoreLabelO = document.querySelector(".score-label-o");
 const currMoveIcon = document.querySelector(".icon-current-move");
@@ -20,6 +21,7 @@ let scoreX = +localStorage.getItem("score_x") ?? 0;
 scoreLabelX.textContent = scoreX;
 let scoreO = +localStorage.getItem("score_o") ?? 0;
 scoreLabelO.textContent = scoreO;
+let rotateDegrees = 0;
 let currMove = "x";
 const fields = [
     [1, 1, 1],
@@ -187,6 +189,15 @@ const formatGameDate = function (timestamp) {
     }).format(timestamp);
 };
 
+const resetLocalStorage = function () {
+    localStorage.clear();
+    [scoreLabelX, scoreLabelO].forEach((label) => (label.textContent = 0));
+    [...scoreHistoryList.children].forEach((listItem) => listItem.remove());
+
+    const resetIcon = document.querySelector(`.${this.classList[0]} ion-icon`);
+    resetIcon.style = `transform: rotate(${(rotateDegrees += 360)}deg);`;
+};
+
 const resetGameVisuals = function () {
     currMove = "x";
     currMoveIcon.setAttribute("name", `${switchIcon(currMove)}-outline`);
@@ -215,6 +226,8 @@ newGameBtn.addEventListener("click", function () {
 [gameHistoryBtn, closePopupBtn].forEach((btn) => {
     btn.addEventListener("click", toggleGameHistoryPopup);
 });
+
+resetStorageBtn.addEventListener("click", resetLocalStorage);
 
 gameSquares.forEach((gameSquare) => {
     gameSquare.addEventListener("click", markSquare);

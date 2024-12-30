@@ -260,10 +260,17 @@ body {
 }
 
 /* VIEW GAME HISTORY BUTTON */
-.dashboard-header button {
+.dashboard-nav-list {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    list-style: none;
+}
+
+.dashboard-nav-list-item button {
     all: unset;
-    display: inherit;
-    align-items: inherit;
+    display: flex;
+    align-items: center;
     justify-content: center;
     width: 3.2rem;
     aspect-ratio: 1 / 1;
@@ -273,12 +280,13 @@ body {
     cursor: pointer;
 }
 
-.dashboard-header button:hover {
+.dashboard-nav-list-item button:hover {
     opacity: 0.5;
 }
 
-.dashboard-header ion-icon {
+.dashboard-nav-list-item ion-icon {
     font-size: 1.6rem;
+    transition: transform 0.5s;
 }
 
 /* LEADERBOARD DIV */
