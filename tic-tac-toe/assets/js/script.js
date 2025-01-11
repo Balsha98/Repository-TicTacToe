@@ -5,7 +5,7 @@ const gameHistoryPopup = document.querySelector(".div-game-history-popup");
 const closePopupBtn = document.querySelector(".btn-close-popup");
 const scoreHistoryList = document.querySelector(".score-history-list");
 const confirmationPopup = document.querySelector(".div-confirmation-popup");
-const confirmationIcon = document.querySelector(".icon-confirmation");
+const confirmationHeading = document.querySelector(".confirmation-popup-heading");
 const newGameBtn = document.querySelector(".btn-new-game");
 const popupOverlayDiv = document.querySelector(".div-popup-overlay");
 const gameHistoryBtn = document.querySelector(".btn-game-history");
@@ -30,10 +30,20 @@ const fields = [
 ];
 
 // ***** DOM ELEMENTS ***** //
-const toggleConfirmationPopup = function (icon = "close") {
-    confirmationIcon.setAttribute("name", `${icon}-outline`);
-    confirmationPopup.classList.toggle("hide-up");
-    popupOverlayDiv.classList.toggle("hide-down");
+const showConfirmationPopup = function (isWinner, icon) {
+    if (isWinner)
+        confirmationHeading.innerHTML = `
+            Player <ion-icon name="${icon}-outline"></ion-icon> Wins!
+        `;
+    else confirmationHeading.innerHTML = "The Game Is Tied!";
+
+    confirmationPopup.classList.remove("hide-up");
+    popupOverlayDiv.classList.remove("hide-down");
+};
+
+const hideConfirmationPopup = function () {
+    confirmationPopup.classList.add("hide-up");
+    popupOverlayDiv.classList.add("hide-down");
 };
 
 const toggleGameHistoryPopup = function () {
@@ -55,12 +65,20 @@ const markSquare = function () {
     const { row, col } = getSquarePosition(this);
     fields[row][col] = currMove;
 
-    // Check for game result.
+    // Check for a winner.
     if (checkForWinner(fields)) {
         gameOver = checkForWinner(fields);
-        toggleConfirmationPopup(currIcon);
+        showConfirmationPopup(true, currIcon);
         updateGameHistory(currMove);
         updateScoreBoard(currMove);
+        return;
+    }
+
+    // Check for a tie.
+    if (checkForTie()) {
+        gameOver = checkForTie(fields);
+        showConfirmationPopup(false, currIcon);
+        // updateGameHistory(currMove);
         return;
     }
 
@@ -81,6 +99,15 @@ const switchIcon = function (move) {
 
 const getSquarePosition = function (square) {
     return { row: square.dataset.row, col: square.dataset.col };
+};
+
+const checkForTie = function () {
+    let counter = 0;
+    fields.forEach((row) => {
+        if (!row.includes(1)) counter++;
+    });
+
+    return counter === fields.length;
 };
 
 const checkForWinner = function (fields) {
@@ -150,6 +177,7 @@ const updateScoreBoard = function (winner) {
 
 const loadGameHistory = function () {
     if (!localStorage.getItem("game_history")) return;
+
     JSON.parse(localStorage.getItem("game_history")).forEach((object) => {
         const listItem = `
             <li class="score-history-list-item">
@@ -219,7 +247,7 @@ loadGameHistory();
 
 // ***** DOM ELEMENTS ***** //
 newGameBtn.addEventListener("click", function () {
-    toggleConfirmationPopup();
+    hideConfirmationPopup();
     resetGameVisuals();
 });
 
