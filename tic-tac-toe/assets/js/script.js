@@ -184,8 +184,8 @@ const loadGameHistory = function () {
     `;
 
     const gameHistory = JSON.parse(localStorage.getItem("game_history"));
-    for (let i = 1; i <= gameHistory.length; i++) {
-        const { id, winner, date } = gameHistory[i - 1];
+    JSON.parse(localStorage.getItem("game_history")).forEach((object, i, array) => {
+        const { id, winner, date } = object;
 
         listItem += `
             <li class="inner-score-history-list-item">
@@ -197,7 +197,7 @@ const loadGameHistory = function () {
             </li>
         `;
 
-        if (i === gameHistory.length) {
+        if (i === array.length) {
             listItem += `
                     </ul>
                 </li>
@@ -210,7 +210,7 @@ const loadGameHistory = function () {
                     <ul class='inner-score-history-list'>
             `;
         }
-    }
+    });
 
     scoreHistoryList.insertAdjacentHTML("beforeend", listItem);
 };
