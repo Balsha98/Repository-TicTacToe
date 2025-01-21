@@ -101,6 +101,10 @@ const switchIcon = function (move) {
     return move === "x" ? "close" : "radio-button-off";
 };
 
+const generateIonIcon = function (icon) {
+    return `<ion-icon name="${switchIcon(icon)}-outline"></ion-icon>`;
+};
+
 const getSquarePosition = function (square) {
     return { row: square.dataset.row, col: square.dataset.col };
 };
@@ -230,10 +234,6 @@ const generateInnerListItem = function (id, winner, date) {
     listItem.appendChild(dateText);
 
     return listItem;
-};
-
-const generateIonIcon = function (icon) {
-    return `<ion-icon name="${switchIcon(icon)}-outline"></ion-icon>`;
 };
 
 const loadGameHistory = function () {
