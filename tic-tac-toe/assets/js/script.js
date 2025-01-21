@@ -205,7 +205,7 @@ const loadGameHistory = function () {
     `;
 
     const gameHistory = JSON.parse(localStorage.getItem("game_history"));
-    gameHistory.forEach((object, _) => {
+    gameHistory.forEach((object) => {
         const { id, winner, date } = object;
 
         listData += `
@@ -241,18 +241,19 @@ const loadGameHistory = function () {
 const updateGameHistory = function (winner) {
     const gameHistory = JSON.parse(localStorage.getItem("game_history")) ?? [];
     const newUpdate = { id: gameHistory.length + 1, winner, date: new Date().getTime() };
+    const { id, date } = newUpdate;
 
     const totalListItems = scoreHistoryList.children.length;
     if (totalListItems === 0) {
         const newItem = `
-            <li class="score-history-list-item history-list-item-${id}">
+            <li class="score-history-list-item history-list-item-${id - 1}" data-item-index=${id - 1}>
                 <ul class="inner-score-history-list">
                     <li class="inner-score-history-list-item">
                         <div class="div-score-history-info">
-                            <span>${newUpdate["id"]}.</span>
+                            <span>${id}.</span>
                             <p>Player <ion-icon name="${switchIcon(winner)}-outline"></ion-icon> won this game.</p>
                         </div>
-                        <p>${formatGameDate(newUpdate["date"])}</p>
+                        <p>${formatGameDate(date)}</p>
                     </li>
                 </ul>
             </li>
@@ -267,10 +268,10 @@ const updateGameHistory = function (winner) {
             const newItem = `
                 <li class="inner-score-history-list-item">
                     <div class="div-score-history-info">
-                        <span>${newUpdate["id"]}.</span>
+                        <span>${id}.</span>
                         <p>Player <ion-icon name="${switchIcon(winner)}-outline"></ion-icon> won this game.</p>
                     </div>
-                    <p>${formatGameDate(newUpdate["date"])}</p>
+                    <p>${formatGameDate(date)}</p>
                 </li>
             `;
 
