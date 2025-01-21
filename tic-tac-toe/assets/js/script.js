@@ -270,7 +270,7 @@ const updateGameHistory = function (winner) {
 
     if (totalListItems === 0) {
         newItem = `
-            <li class="score-history-list-item history-list-item-0" data-item-index="0">
+            <li class="score-history-list-item li-0" data-item-index="0">
                 <ul class="inner-score-history-list">
                     <li class="inner-score-history-list-item">
                         <div class="div-score-history-info">
@@ -295,7 +295,7 @@ const updateGameHistory = function (winner) {
             const newItemID = +lastListItem.dataset.itemIndex + 1;
 
             newItem = `
-                <li class="score-history-list-item history-list-item-${newItemID}" data-item-index="${newItemID}">
+                <li class="score-history-list-item li-${newItemID}" data-item-index="${newItemID}">
                     <ul class="inner-score-history-list">
                         <li class="inner-score-history-list-item">
                             <div class="div-score-history-info">
