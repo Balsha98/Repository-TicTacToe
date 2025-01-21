@@ -18,6 +18,7 @@ const gameSquares = document.querySelectorAll(".div-game-square");
 
 // ***** GLOBAL VARIABLES ***** //
 let gameOver = false;
+let currHistoryItem = 0;
 let scoreX = +localStorage.getItem("score_x") ?? 0;
 scoreLabelX.textContent = scoreX;
 let scoreO = +localStorage.getItem("score_o") ?? 0;
@@ -176,7 +177,22 @@ const updateScoreBoard = function (winner) {
     localStorage.setItem(`score_${winner}`, +winningScore);
 };
 
-const switchGameHistoryList = function () {};
+const scrollThroughGameHistory = function () {
+    const direction = this.classList[1].split("-")[1];
+    const totalHistoryItems = [...scoreHistoryList.children];
+
+    if (direction === "backward") {
+        if (currHistoryItem === 0) return;
+        currHistoryItem--;
+    } else if (direction === "forward") {
+        if (currHistoryItem === totalHistoryItems.length - 1) return;
+        currHistoryItem++;
+    }
+
+    totalHistoryItems
+        .find((list) => +list.dataset.itemIndex === currHistoryItem)
+        .scrollIntoView({ behavior: "smooth" });
+};
 
 const loadGameHistory = function () {
     if (!localStorage.getItem("game_history")) return;
@@ -276,6 +292,10 @@ loadGameHistory();
 newGameBtn.addEventListener("click", function () {
     hideConfirmationPopup();
     resetGameVisuals();
+});
+
+paginationBtns.forEach((btn) => {
+    btn.addEventListener("click", scrollThroughGameHistory);
 });
 
 [gameHistoryBtn, closePopupBtn].forEach((btn) => {
