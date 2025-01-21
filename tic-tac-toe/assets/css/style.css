@@ -242,6 +242,11 @@ body {
     font-size: 2rem;
 }
 
+.div-pagination-counter-container {
+    margin-left: auto;
+    font-size: 1.2rem;
+}
+
 /* POPUP OVERLAY */
 .div-popup-overlay {
     position: fixed;

@@ -5,6 +5,8 @@ const gameHistoryPopup = document.querySelector(".div-game-history-popup");
 const closePopupBtn = document.querySelector(".btn-close-popup");
 const paginationBtns = document.querySelectorAll(".btn-pagination");
 const scoreHistoryList = document.querySelector(".score-history-list");
+const currPageSpan = document.querySelector(".span-curr-page");
+const lastPageSpan = document.querySelector(".span-last-page");
 const confirmationPopup = document.querySelector(".div-confirmation-popup");
 const confirmationHeading = document.querySelector(".confirmation-popup-heading");
 const newGameBtn = document.querySelector(".btn-new-game");
@@ -201,8 +203,8 @@ const loadGameHistory = function () {
         <li class='score-history-list-item' data-item-index='0'>
             <ul class='inner-score-history-list'>
     `;
-
-    JSON.parse(localStorage.getItem("game_history")).forEach((object, _, array) => {
+    const gameHistory = JSON.parse(localStorage.getItem("game_history"));
+    gameHistory.forEach((object, _) => {
         const { id, winner, date } = object;
 
         listItem += `
@@ -215,7 +217,7 @@ const loadGameHistory = function () {
             </li>
         `;
 
-        if (id === array.length) {
+        if (id === gameHistory.length) {
             listItem += `
                     </ul>
                 </li>
@@ -231,6 +233,7 @@ const loadGameHistory = function () {
     });
 
     scoreHistoryList.insertAdjacentHTML("beforeend", listItem);
+    lastPageSpan.textContent = gameHistory.length;
 };
 
 const updateGameHistory = function (winner) {
