@@ -227,7 +227,7 @@ const loadGameHistory = function () {
             listData += `
                     </ul>
                 </li>
-                <li class='score-history-list-item history-list-item-${id / 5 + 1}' data-item-index='${id / 5 + 1}'>
+                <li class='score-history-list-item history-list-item-${id / 5}' data-item-index='${id / 5}'>
                     <ul class='inner-score-history-list'>
             `;
         }
@@ -260,6 +260,8 @@ const updateGameHistory = function (winner) {
         `;
 
         scoreHistoryList.insertAdjacentHTML("beforeend", newItem);
+        lastPageSpan.textContent = scoreHistoryList.children.length;
+        currPageSpan.textContent = id;
     } else {
         const lastListItem = scoreHistoryList.children[totalListItems - 1];
         const lastInnerList = document.querySelector(`.${lastListItem.classList[1]} .inner-score-history-list`);
