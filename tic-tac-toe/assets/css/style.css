@@ -7,6 +7,8 @@
     --gray-shade: #212529;
     --gradient-red: #ffa8a8;
     --gradient-indigo: #91a7ff;
+    --to-left-top-gradient: linear-gradient(to left top, var(--gradient-red), var(--gradient-indigo));
+    --to-right-bottom-gradient: linear-gradient(to right bottom, var(--gradient-red), var(--gradient-indigo));
     --shadow-sm: rgba(0, 0, 0, 0.2);
 }
 
@@ -26,7 +28,7 @@ html {
 
 body {
     height: 100vh;
-    background: linear-gradient(to left top, var(--gradient-red), var(--gradient-indigo));
+    background: var(--to-left-top-gradient);
 }
 
 /* CONFIRMATION POPUP DIV */
@@ -100,7 +102,7 @@ body {
     padding: 0.8rem 0;
     font-size: 2rem;
     font-weight: 500;
-    background: linear-gradient(to right bottom, var(--gradient-red), var(--gradient-indigo));
+    background: var(--to-right-bottom-gradient);
     border-radius: 0.4rem;
     cursor: pointer;
 }
@@ -174,7 +176,7 @@ body {
     width: 3.2rem;
     aspect-ratio: 1 / 1;
     font-size: 1.6rem;
-    background: linear-gradient(to left top, var(--gradient-red), var(--gradient-indigo));
+    background: var(--to-left-top-gradient);
     border-radius: 50%;
     transition: opacity 0.5s;
     cursor: pointer;
@@ -318,7 +320,7 @@ body {
     justify-content: center;
     width: 3.2rem;
     aspect-ratio: 1 / 1;
-    background: linear-gradient(to left top, var(--gradient-red), var(--gradient-indigo));
+    background: var(--to-left-top-gradient);
     border-radius: 50%;
     transition: opacity 0.5s;
     cursor: pointer;
