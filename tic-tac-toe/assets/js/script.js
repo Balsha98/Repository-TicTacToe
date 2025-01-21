@@ -179,7 +179,7 @@ const loadGameHistory = function () {
     if (!localStorage.getItem("game_history")) return;
 
     let listItem = `
-        <li class='score-history-list-item'>
+        <li class='score-history-list-item' data-item-index='0'>
             <ul class='inner-score-history-list'>
     `;
 
@@ -205,7 +205,7 @@ const loadGameHistory = function () {
             listItem += `
                     </ul>
                 </li>
-                <li class='score-history-list-item'>
+                <li class='score-history-list-item' data-item-index='${id / 5}'>
                     <ul class='inner-score-history-list'>
             `;
         }
