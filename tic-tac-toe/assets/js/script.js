@@ -178,19 +178,41 @@ const updateScoreBoard = function (winner) {
 const loadGameHistory = function () {
     if (!localStorage.getItem("game_history")) return;
 
-    JSON.parse(localStorage.getItem("game_history")).forEach((object) => {
-        const listItem = `
-            <li class="score-history-list-item">
+    let listItem = `
+        <li class='score-history-list-item'>
+            <ul class='inner-score-history-list'>
+    `;
+
+    const gameHistory = JSON.parse(localStorage.getItem("game_history"));
+    for (let i = 1; i <= gameHistory.length; i++) {
+        const { id, winner, date } = gameHistory[i - 1];
+
+        listItem += `
+            <li class="inner-score-history-list-item">
                 <div class="div-score-history-info">
-                    <span>${object["id"]}.</span>
-                    <p>Player <ion-icon name="${switchIcon(object["winner"])}-outline"></ion-icon> won this game.</p>
+                    <span>${id}.</span>
+                    <p>Player <ion-icon name="${switchIcon(winner)}-outline"></ion-icon> won this game.</p>
                 </div>
-                <p>${formatGameDate(object["date"])}</p>
+                <p>${formatGameDate(date)}</p>
             </li>
         `;
 
-        scoreHistoryList.insertAdjacentHTML("beforeend", listItem);
-    });
+        if (i === gameHistory.length) {
+            listItem += `
+                    </ul>
+                </li>
+            `;
+        } else if (i % 5 === 0) {
+            listItem += `
+                    </ul>
+                </li>
+                <li class='score-history-list-item'>
+                    <ul class='inner-score-history-list'>
+            `;
+        }
+    }
+
+    scoreHistoryList.insertAdjacentHTML("beforeend", listItem);
 };
 
 const updateGameHistory = function (winner) {
@@ -224,6 +246,9 @@ const resetLocalStorage = function () {
 
     const resetIcon = document.querySelector(`.${this.classList[0]} ion-icon`);
     resetIcon.style = `transform: rotate(${(rotateDegrees += 360)}deg);`;
+
+    scoreO = 0;
+    scoreX = 0;
 };
 
 const resetGameVisuals = function () {
