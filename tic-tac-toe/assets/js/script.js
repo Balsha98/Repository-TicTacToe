@@ -200,7 +200,7 @@ const loadGameHistory = function () {
     if (!localStorage.getItem("game_history")) return;
 
     let listItem = `
-        <li class='score-history-list-item' data-item-index='0'>
+        <li class='score-history-list-item history-list-item-0' data-item-index='0'>
             <ul class='inner-score-history-list'>
     `;
     const gameHistory = JSON.parse(localStorage.getItem("game_history"));
@@ -223,13 +223,13 @@ const loadGameHistory = function () {
                 </li>
             `;
         } else if (id % 5 === 0) {
-            const nextList = id / 5;
-            lastPageSpan.textContent = nextList + 1;
+            const nextListID = id / 5;
+            lastPageSpan.textContent = nextListID + 1;
 
             listItem += `
                     </ul>
                 </li>
-                <li class='score-history-list-item' data-item-index='${nextList}'>
+                <li class='score-history-list-item history-list-item-${nextListID}' data-item-index='${nextListID}'>
                     <ul class='inner-score-history-list'>
             `;
         }
@@ -241,20 +241,46 @@ const loadGameHistory = function () {
 
 const updateGameHistory = function (winner) {
     const gameHistory = JSON.parse(localStorage.getItem("game_history")) ?? [];
-    const newUpdate = { id: gameHistory.length + 1, winner: winner, date: new Date().getTime() };
-    const listItem = `
-        <li class="score-history-list-item">
-            <div class="div-score-history-info">
-                <span>${newUpdate["id"]}.</span>
-                <p>Player <ion-icon name="${switchIcon(winner)}-outline"></ion-icon> won this game.</p>
-            </div>
-            <p>${formatGameDate(newUpdate["date"])}</p>
-        </li>
-    `;
+    const newUpdate = { id: gameHistory.length + 1, winner, date: new Date().getTime() };
+
+    const totalListItems = scoreHistoryList.children.length;
+    if (totalListItems === 0) {
+        const newItem = `
+            <li class="score-history-list-item">
+                <ul class="inner-score-history-list">
+                    <li class="inner-score-history-list-item">
+                        <div class="div-score-history-info">
+                            <span>${newUpdate["id"]}.</span>
+                            <p>Player <ion-icon name="${switchIcon(winner)}-outline"></ion-icon> won this game.</p>
+                        </div>
+                        <p>${formatGameDate(newUpdate["date"])}</p>
+                    </li>
+                </ul>
+            </li>
+        `;
+
+        scoreHistoryList.insertAdjacentHTML("beforeend", newItem);
+    } else {
+        const lastListItem = scoreHistoryList.children[totalListItems - 1];
+        const lastInnerList = document.querySelector(`.${lastListItem.classList[1]} .inner-score-history-list`);
+        if (lastInnerList.children.length === 5) {
+        } else {
+            const newItem = `
+                <li class="inner-score-history-list-item">
+                    <div class="div-score-history-info">
+                        <span>${newUpdate["id"]}.</span>
+                        <p>Player <ion-icon name="${switchIcon(winner)}-outline"></ion-icon> won this game.</p>
+                    </div>
+                    <p>${formatGameDate(newUpdate["date"])}</p>
+                </li>
+            `;
+
+            lastInnerList.insertAdjacentHTML("beforeend", newItem);
+        }
+    }
 
     gameHistory.push(newUpdate);
     localStorage.setItem("game_history", JSON.stringify(gameHistory));
-    scoreHistoryList.insertAdjacentHTML("beforeend", listItem);
 };
 
 const formatGameDate = function (timestamp) {
