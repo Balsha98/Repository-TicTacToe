@@ -199,15 +199,16 @@ const scrollThroughGameHistory = function () {
 const loadGameHistory = function () {
     if (!localStorage.getItem("game_history")) return;
 
-    let listItem = `
+    let listData = `
         <li class='score-history-list-item history-list-item-0' data-item-index='0'>
             <ul class='inner-score-history-list'>
     `;
+
     const gameHistory = JSON.parse(localStorage.getItem("game_history"));
     gameHistory.forEach((object, _) => {
         const { id, winner, date } = object;
 
-        listItem += `
+        listData += `
             <li class="inner-score-history-list-item">
                 <div class="div-score-history-info">
                     <span>${id}.</span>
@@ -218,24 +219,22 @@ const loadGameHistory = function () {
         `;
 
         if (id === gameHistory.length) {
-            listItem += `
+            listData += `
                     </ul>
                 </li>
             `;
         } else if (id % 5 === 0) {
-            const nextListID = id / 5;
-            lastPageSpan.textContent = nextListID + 1;
-
-            listItem += `
+            listData += `
                     </ul>
                 </li>
-                <li class='score-history-list-item history-list-item-${nextListID}' data-item-index='${nextListID}'>
+                <li class='score-history-list-item history-list-item-${id / 5 + 1}' data-item-index='${id / 5 + 1}'>
                     <ul class='inner-score-history-list'>
             `;
         }
     });
 
-    scoreHistoryList.insertAdjacentHTML("beforeend", listItem);
+    scoreHistoryList.insertAdjacentHTML("beforeend", listData);
+    lastPageSpan.textContent = scoreHistoryList.children.length;
     currPageSpan.textContent = 1;
 };
 
@@ -246,7 +245,7 @@ const updateGameHistory = function (winner) {
     const totalListItems = scoreHistoryList.children.length;
     if (totalListItems === 0) {
         const newItem = `
-            <li class="score-history-list-item">
+            <li class="score-history-list-item history-list-item-${id}">
                 <ul class="inner-score-history-list">
                     <li class="inner-score-history-list-item">
                         <div class="div-score-history-info">
