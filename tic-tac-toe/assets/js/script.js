@@ -196,43 +196,67 @@ const scrollThroughGameHistory = function () {
         .scrollIntoView({ behavior: "smooth" });
 };
 
+const generateListItem = function (itemIndex) {
+    const listItem = document.createElement("li");
+    listItem.classList.add("score-history-list-item");
+    listItem.classList.add(`li-${itemIndex}`);
+    listItem.dataset.itemIndex = itemIndex;
+
+    const innerList = document.createElement("ul");
+    innerList.classList.add("inner-score-history-list");
+    listItem.appendChild(innerList);
+
+    return listItem;
+};
+
+const generateInnerListItem = function (id, winner, date) {
+    const listItem = document.createElement("li");
+    listItem.classList.add("inner-score-history-list-item");
+
+    const itemDiv = document.createElement("div");
+    itemDiv.classList.add("div-score-history-info");
+
+    const idSpan = document.createElement("span");
+    idSpan.textContent = `${id}.`;
+    itemDiv.appendChild(idSpan);
+
+    const descText = document.createElement("p");
+    descText.innerHTML = `Player ${generateIonIcon(winner)} won this game.`;
+    itemDiv.appendChild(descText);
+    listItem.appendChild(itemDiv);
+
+    const dateText = document.createElement("p");
+    dateText.textContent = formatGameDate(date);
+    listItem.appendChild(dateText);
+
+    return listItem;
+};
+
+const generateIonIcon = function (icon) {
+    return `<ion-icon name="${switchIcon(icon)}-outline"></ion-icon>`;
+};
+
 const loadGameHistory = function () {
     if (!localStorage.getItem("game_history")) return;
 
-    let listData = `
-        <li class='score-history-list-item history-list-item-0' data-item-index='0'>
-            <ul class='inner-score-history-list'>
-    `;
+    let listItemID = 0;
+    let listItem = generateListItem(listItemID);
+    const gameHistory = localStorage.getItem("game_history");
+    for (const { id, winner, date } of JSON.parse(gameHistory)) {
+        if (scoreHistoryList.children.length === 0) scoreHistoryList.appendChild(listItem);
 
-    JSON.parse(localStorage.getItem("game_history")).forEach((object, _, array) => {
-        const { id, winner, date } = object;
+        const currInnerList = document.querySelector(`.li-${listItemID} .inner-score-history-list`);
+        currInnerList.appendChild(generateInnerListItem(id, winner, date));
 
-        listData += `
-            <li class="inner-score-history-list-item">
-                <div class="div-score-history-info">
-                    <span>${id}.</span>
-                    <p>Player <ion-icon name="${switchIcon(winner)}-outline"></ion-icon> won this game.</p>
-                </div>
-                <p>${formatGameDate(date)}</p>
-            </li>
-        `;
+        if (id % 5 === 0 || id === JSON.parse(gameHistory).length) {
+            scoreHistoryList.appendChild(listItem);
+            if (id === JSON.parse(gameHistory).length) break;
 
-        if (id === array.length) {
-            listData += `
-                    </ul>
-                </li>
-            `;
-        } else if (id % 5 === 0) {
-            listData += `
-                    </ul>
-                </li>
-                <li class='score-history-list-item history-list-item-${id / 5}' data-item-index='${id / 5}'>
-                    <ul class='inner-score-history-list'>
-            `;
+            listItem = generateListItem(id / 5);
+            listItemID = id / 5;
         }
-    });
+    }
 
-    scoreHistoryList.insertAdjacentHTML("beforeend", listData);
     lastPageSpan.textContent = scoreHistoryList.children.length;
     currPageSpan.textContent = 1;
 };
