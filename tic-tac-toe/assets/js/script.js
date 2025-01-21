@@ -313,10 +313,11 @@ const formatGameDate = function (timestamp) {
 
 const resetLocalStorage = function () {
     localStorage.clear();
+
     [currPageSpan, lastPageSpan].forEach((span) => (span.textContent = 0));
     [...scoreHistoryList.children].forEach((listItem) => listItem.remove());
-    [scoreLabelX, scoreLabelO].forEach((label) => (label.textContent = 0));
 
+    [scoreLabelX, scoreLabelO].forEach((label) => (label.textContent = 0));
     const resetIcon = document.querySelector(`.${this.classList[0]} ion-icon`);
     resetIcon.style = `transform: rotate(${(rotateDegrees += 360)}deg);`;
 
