@@ -21,6 +21,7 @@
 
 html {
     font-size: 10px;
+    scroll-behavior: smooth;
 }
 
 body {
@@ -146,10 +147,41 @@ body {
     transform: translate(-50%, -50%);
 }
 
-.div-game-history-popup-content h3 {
+.game-history-popup-content-header {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+}
+
+.game-history-popup-content-header h3 {
     font-size: 2.4rem;
     font-weight: 500;
     text-align: center;
+}
+
+/* PAGINATION BUTTONS */
+.div-pagination-btns-container {
+    display: inherit;
+    align-items: center;
+    gap: 1.2rem;
+}
+
+.div-pagination-btns-container button {
+    all: unset;
+    display: inherit;
+    align-items: inherit;
+    justify-content: center;
+    width: 3.2rem;
+    aspect-ratio: 1 / 1;
+    font-size: 1.6rem;
+    background: linear-gradient(to left top, var(--gradient-red), var(--gradient-indigo));
+    border-radius: 50%;
+    transition: opacity 0.5s;
+    cursor: pointer;
+}
+
+.div-pagination-btns-container button:hover {
+    opacity: 0.5;
 }
 
 /* SCORE HISTORY LIST */
@@ -293,7 +325,7 @@ body {
 }
 
 .dashboard-nav-list-item button:hover {
-    opacity: 0.5;
+    opacity: 0.8;
 }
 
 .dashboard-nav-list-item ion-icon {
