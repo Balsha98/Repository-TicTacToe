@@ -103,7 +103,12 @@ body {
     font-weight: 500;
     background: var(--to-right-bottom-gradient);
     border-radius: 0.4rem;
+    transition: opacity 0.5s;
     cursor: pointer;
+}
+
+.div-confirmation-popup-content button:hover {
+    opacity: 0.5;
 }
 
 /* GAME HISTORY POPUP DIV */

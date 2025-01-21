@@ -204,8 +204,7 @@ const loadGameHistory = function () {
             <ul class='inner-score-history-list'>
     `;
 
-    const gameHistory = JSON.parse(localStorage.getItem("game_history"));
-    gameHistory.forEach((object) => {
+    JSON.parse(localStorage.getItem("game_history")).forEach((object, _, array) => {
         const { id, winner, date } = object;
 
         listData += `
@@ -218,7 +217,7 @@ const loadGameHistory = function () {
             </li>
         `;
 
-        if (id === gameHistory.length) {
+        if (id === array.length) {
             listData += `
                     </ul>
                 </li>
