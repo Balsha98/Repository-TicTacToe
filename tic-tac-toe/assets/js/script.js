@@ -269,7 +269,7 @@ const updateGameHistory = function (winner) {
         const numItems = lastInnerList.children.length;
 
         if (numItems === 5) {
-            const newItemID = lastListItem.dataset.itemIndex;
+            const newItemID = +lastListItem.dataset.itemIndex + 1;
 
             newItem = `
                 <li class="score-history-list-item history-list-item-${newItemID}" data-item-index="${newItemID}">
@@ -286,7 +286,7 @@ const updateGameHistory = function (winner) {
             `;
 
             scoreHistoryList.insertAdjacentHTML("beforeend", newItem);
-            [lastPageSpan, currPageSpan].forEach((span) => (span.textContent = newItemID));
+            lastPageSpan.textContent = newItemID + 1;
         } else {
             newItem = `
                 <li class="inner-score-history-list-item">
