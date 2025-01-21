@@ -239,13 +239,14 @@ const loadGameHistory = function () {
 };
 
 const updateGameHistory = function (winner) {
+    const totalListItems = scoreHistoryList.children.length;
     const gameHistory = JSON.parse(localStorage.getItem("game_history")) ?? [];
     const newUpdate = { id: gameHistory.length + 1, winner, date: new Date().getTime() };
     const { id, date } = newUpdate;
+    let newItem;
 
-    const totalListItems = scoreHistoryList.children.length;
     if (totalListItems === 0) {
-        const newItem = `
+        newItem = `
             <li class="score-history-list-item history-list-item-0" data-item-index="0">
                 <ul class="inner-score-history-list">
                     <li class="inner-score-history-list-item">
@@ -265,12 +266,13 @@ const updateGameHistory = function (winner) {
     } else {
         const lastListItem = scoreHistoryList.children[totalListItems - 1];
         const lastInnerList = document.querySelector(`.${lastListItem.classList[1]} .inner-score-history-list`);
-
-        let newItem;
         const numItems = lastInnerList.children.length;
+
         if (numItems === 5) {
+            const newItemID = lastListItem.dataset.itemIndex;
+
             newItem = `
-                <li class="score-history-list-item history-list-item-${numItems / 5}" data-item-index="${numItems / 5}">
+                <li class="score-history-list-item history-list-item-${newItemID}" data-item-index="${newItemID}">
                     <ul class="inner-score-history-list">
                         <li class="inner-score-history-list-item">
                             <div class="div-score-history-info">
@@ -282,6 +284,9 @@ const updateGameHistory = function (winner) {
                     </ul>
                 </li>
             `;
+
+            scoreHistoryList.insertAdjacentHTML("beforeend", newItem);
+            [lastPageSpan, currPageSpan].forEach((span) => (span.textContent = newItemID));
         } else {
             newItem = `
                 <li class="inner-score-history-list-item">
@@ -292,12 +297,13 @@ const updateGameHistory = function (winner) {
                     <p>${formatGameDate(date)}</p>
                 </li>
             `;
-        }
 
-        lastInnerList.insertAdjacentHTML("beforeend", newItem);
+            lastInnerList.insertAdjacentHTML("beforeend", newItem);
+        }
     }
 
-    localStorage.setItem("game_history", JSON.stringify(gameHistory.push(newUpdate)));
+    gameHistory.push(newUpdate);
+    localStorage.setItem("game_history", JSON.stringify(gameHistory));
 };
 
 const formatGameDate = function (timestamp) {
