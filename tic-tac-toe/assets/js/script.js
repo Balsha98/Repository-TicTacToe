@@ -246,7 +246,7 @@ const updateGameHistory = function (winner) {
     const totalListItems = scoreHistoryList.children.length;
     if (totalListItems === 0) {
         const newItem = `
-            <li class="score-history-list-item history-list-item-${id - 1}" data-item-index=${id - 1}>
+            <li class="score-history-list-item history-list-item-0" data-item-index="0">
                 <ul class="inner-score-history-list">
                     <li class="inner-score-history-list-item">
                         <div class="div-score-history-info">
@@ -265,9 +265,25 @@ const updateGameHistory = function (winner) {
     } else {
         const lastListItem = scoreHistoryList.children[totalListItems - 1];
         const lastInnerList = document.querySelector(`.${lastListItem.classList[1]} .inner-score-history-list`);
-        if (lastInnerList.children.length === 5) {
+
+        let newItem;
+        const numItems = lastInnerList.children.length;
+        if (numItems === 5) {
+            newItem = `
+                <li class="score-history-list-item history-list-item-${numItems / 5}" data-item-index="${numItems / 5}">
+                    <ul class="inner-score-history-list">
+                        <li class="inner-score-history-list-item">
+                            <div class="div-score-history-info">
+                                <span>${id}.</span>
+                                <p>Player <ion-icon name="${switchIcon(winner)}-outline"></ion-icon> won this game.</p>
+                            </div>
+                            <p>${formatGameDate(date)}</p>
+                        </li>
+                    </ul>
+                </li>
+            `;
         } else {
-            const newItem = `
+            newItem = `
                 <li class="inner-score-history-list-item">
                     <div class="div-score-history-info">
                         <span>${id}.</span>
@@ -276,13 +292,12 @@ const updateGameHistory = function (winner) {
                     <p>${formatGameDate(date)}</p>
                 </li>
             `;
-
-            lastInnerList.insertAdjacentHTML("beforeend", newItem);
         }
+
+        lastInnerList.insertAdjacentHTML("beforeend", newItem);
     }
 
-    gameHistory.push(newUpdate);
-    localStorage.setItem("game_history", JSON.stringify(gameHistory));
+    localStorage.setItem("game_history", JSON.stringify(gameHistory.push(newUpdate)));
 };
 
 const formatGameDate = function (timestamp) {
