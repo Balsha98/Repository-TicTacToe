@@ -3,6 +3,7 @@
 // ***** DOM ELEMENTS ***** //
 const gameHistoryPopup = document.querySelector(".div-game-history-popup");
 const closePopupBtn = document.querySelector(".btn-close-popup");
+const paginationBtns = document.querySelectorAll(".btn-pagination");
 const scoreHistoryList = document.querySelector(".score-history-list");
 const confirmationPopup = document.querySelector(".div-confirmation-popup");
 const confirmationHeading = document.querySelector(".confirmation-popup-heading");
@@ -174,6 +175,8 @@ const updateScoreBoard = function (winner) {
     document.querySelector(`.score-label-${winner}`).textContent = winningScore;
     localStorage.setItem(`score_${winner}`, +winningScore);
 };
+
+const switchGameHistoryList = function () {};
 
 const loadGameHistory = function () {
     if (!localStorage.getItem("game_history")) return;

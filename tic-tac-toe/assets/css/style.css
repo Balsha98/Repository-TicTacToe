@@ -165,7 +165,7 @@ body {
 .div-pagination-btns-container {
     display: inherit;
     align-items: center;
-    gap: 1.2rem;
+    gap: 0.8rem;
 }
 
 .div-pagination-btns-container button {
