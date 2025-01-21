@@ -183,8 +183,7 @@ const loadGameHistory = function () {
             <ul class='inner-score-history-list'>
     `;
 
-    const gameHistory = JSON.parse(localStorage.getItem("game_history"));
-    JSON.parse(localStorage.getItem("game_history")).forEach((object, i, array) => {
+    JSON.parse(localStorage.getItem("game_history")).forEach((object, _, array) => {
         const { id, winner, date } = object;
 
         listItem += `
@@ -197,12 +196,12 @@ const loadGameHistory = function () {
             </li>
         `;
 
-        if (i === array.length) {
+        if (id === array.length) {
             listItem += `
                     </ul>
                 </li>
             `;
-        } else if (i % 5 === 0) {
+        } else if (id % 5 === 0) {
             listItem += `
                     </ul>
                 </li>
