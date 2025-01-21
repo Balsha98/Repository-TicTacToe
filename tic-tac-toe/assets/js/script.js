@@ -185,10 +185,10 @@ const scrollThroughGameHistory = function () {
 
     if (direction === "backward") {
         if (currHistoryItem === 0) return;
-        currHistoryItem--;
+        currPageSpan.textContent = --currHistoryItem + 1;
     } else if (direction === "forward") {
         if (currHistoryItem === totalHistoryItems.length - 1) return;
-        currHistoryItem++;
+        currPageSpan.textContent = ++currHistoryItem + 1;
     }
 
     totalHistoryItems
@@ -223,17 +223,20 @@ const loadGameHistory = function () {
                 </li>
             `;
         } else if (id % 5 === 0) {
+            const nextList = id / 5;
+            lastPageSpan.textContent = nextList + 1;
+
             listItem += `
                     </ul>
                 </li>
-                <li class='score-history-list-item' data-item-index='${id / 5}'>
+                <li class='score-history-list-item' data-item-index='${nextList}'>
                     <ul class='inner-score-history-list'>
             `;
         }
     });
 
     scoreHistoryList.insertAdjacentHTML("beforeend", listItem);
-    lastPageSpan.textContent = gameHistory.length;
+    currPageSpan.textContent = 1;
 };
 
 const updateGameHistory = function (winner) {
