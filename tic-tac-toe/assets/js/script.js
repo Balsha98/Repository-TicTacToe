@@ -270,30 +270,22 @@ const updateGameHistory = function (winner) {
     let newItem;
 
     if (totalListItems === 0) {
-        newItem = `
-            <li class="score-history-list-item li-0" data-item-index="0">
-                <ul class="inner-score-history-list">
-                    <li class="inner-score-history-list-item">
-                        <div class="div-score-history-info">
-                            <span>${id}.</span>
-                            <p>Player <ion-icon name="${switchIcon(winner)}-outline"></ion-icon> won this game.</p>
-                        </div>
-                        <p>${formatGameDate(date)}</p>
-                    </li>
-                </ul>
-            </li>
-        `;
+        newItem = generateListItem(0);
+        newItem.appendChild(generateInnerListItem(id, winner, date));
+        scoreHistoryList.appendChild(newItem);
 
-        scoreHistoryList.insertAdjacentHTML("beforeend", newItem);
         lastPageSpan.textContent = scoreHistoryList.children.length;
         currPageSpan.textContent = id;
     } else {
         const lastListItem = scoreHistoryList.children[totalListItems - 1];
         const lastInnerList = document.querySelector(`.${lastListItem.classList[1]} .inner-score-history-list`);
-        const numItems = lastInnerList.children.length;
+        const numInnerItems = lastInnerList.children.length;
 
-        if (numItems === 5) {
+        if (numInnerItems === 5) {
             const newItemID = +lastListItem.dataset.itemIndex + 1;
+
+            newItem = generateListItem(newItemID);
+            newItem.appendChild(generateInnerListItem(id, winner, date));
 
             newItem = `
                 <li class="score-history-list-item li-${newItemID}" data-item-index="${newItemID}">
