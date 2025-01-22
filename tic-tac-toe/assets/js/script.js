@@ -279,15 +279,17 @@ const updateGameHistory = function (winner) {
     } else {
         const lastListItem = scoreHistoryList.children[totalListItems - 1];
         const lastInnerList = document.querySelector(`.${lastListItem.classList[1]} .inner-score-history-list`);
-        const numInnerItems = lastInnerList.children.length;
+        const totalInnerItems = lastInnerList.children.length;
 
-        if (numInnerItems === 5) {
+        if (totalInnerItems === 5) {
             const newItemID = +lastListItem.dataset.itemIndex + 1;
             lastPageSpan.textContent = newItemID + 1;
 
             newItem = generateListItem(newItemID);
-            newItem.appendChild(generateInnerListItem(id, winner, date));
             scoreHistoryList.appendChild(newItem);
+
+            const latestInnerList = document.querySelector(`.li-${newItemID} .inner-score-history-list`);
+            latestInnerList.appendChild(generateInnerListItem(id, winner, date));
         } else {
             newItem = generateInnerListItem(id, winner, date);
             lastInnerList.appendChild(newItem);
