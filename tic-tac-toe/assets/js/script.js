@@ -283,38 +283,14 @@ const updateGameHistory = function (winner) {
 
         if (numInnerItems === 5) {
             const newItemID = +lastListItem.dataset.itemIndex + 1;
+            lastPageSpan.textContent = newItemID + 1;
 
             newItem = generateListItem(newItemID);
             newItem.appendChild(generateInnerListItem(id, winner, date));
-
-            newItem = `
-                <li class="score-history-list-item li-${newItemID}" data-item-index="${newItemID}">
-                    <ul class="inner-score-history-list">
-                        <li class="inner-score-history-list-item">
-                            <div class="div-score-history-info">
-                                <span>${id}.</span>
-                                <p>Player <ion-icon name="${switchIcon(winner)}-outline"></ion-icon> won this game.</p>
-                            </div>
-                            <p>${formatGameDate(date)}</p>
-                        </li>
-                    </ul>
-                </li>
-            `;
-
-            scoreHistoryList.insertAdjacentHTML("beforeend", newItem);
-            lastPageSpan.textContent = newItemID + 1;
+            scoreHistoryList.appendChild(newItem);
         } else {
-            newItem = `
-                <li class="inner-score-history-list-item">
-                    <div class="div-score-history-info">
-                        <span>${id}.</span>
-                        <p>Player <ion-icon name="${switchIcon(winner)}-outline"></ion-icon> won this game.</p>
-                    </div>
-                    <p>${formatGameDate(date)}</p>
-                </li>
-            `;
-
-            lastInnerList.insertAdjacentHTML("beforeend", newItem);
+            newItem = generateInnerListItem(id, winner, date);
+            lastInnerList.appendChild(newItem);
         }
     }
 
