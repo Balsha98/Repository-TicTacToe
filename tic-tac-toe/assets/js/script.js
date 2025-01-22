@@ -271,8 +271,9 @@ const updateGameHistory = function (winner) {
 
     if (totalListItems === 0) {
         newItem = generateListItem(0);
-        newItem.appendChild(generateInnerListItem(id, winner, date));
         scoreHistoryList.appendChild(newItem);
+        const latestInnerList = document.querySelector(".li-0 .inner-score-history-list");
+        latestInnerList.appendChild(generateInnerListItem(id, winner, date));
 
         lastPageSpan.textContent = scoreHistoryList.children.length;
         currPageSpan.textContent = id;
