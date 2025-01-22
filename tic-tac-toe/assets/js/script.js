@@ -253,6 +253,7 @@ const loadGameHistory = function () {
             if (id === JSON.parse(gameHistory).length) break;
 
             listItem = generateListItem(id / 5);
+            scoreHistoryList.appendChild(listItem);
             listItemID = id / 5;
         }
     }
