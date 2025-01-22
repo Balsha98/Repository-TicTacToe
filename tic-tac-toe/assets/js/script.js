@@ -287,7 +287,6 @@ const updateGameHistory = function (winner) {
 
             newItem = generateListItem(newItemID);
             scoreHistoryList.appendChild(newItem);
-
             const latestInnerList = document.querySelector(`.li-${newItemID} .inner-score-history-list`);
             latestInnerList.appendChild(generateInnerListItem(id, winner, date));
         } else {
