@@ -116,6 +116,32 @@ const scrollThroughGameHistory = function () {
         .scrollIntoView({ behavior: "smooth" });
 };
 
+const loadGameHistory = function () {
+    if (!localStorage.getItem("game_history")) return;
+
+    let listItemID = 0;
+    let listItem = generateListItem(listItemID);
+    const gameHistory = localStorage.getItem("game_history");
+    for (const { id, winner, date } of JSON.parse(gameHistory)) {
+        if (scoreHistoryList.children.length === 0) scoreHistoryList.appendChild(listItem);
+
+        const currInnerList = document.querySelector(`.li-${listItemID} .inner-score-history-list`);
+        currInnerList.appendChild(generateInnerListItem(id, winner, date));
+
+        if (id % 5 === 0 || id === JSON.parse(gameHistory).length) {
+            scoreHistoryList.appendChild(listItem);
+            if (id === JSON.parse(gameHistory).length) break;
+
+            listItem = generateListItem(id / 5);
+            scoreHistoryList.appendChild(listItem);
+            listItemID = id / 5;
+        }
+    }
+
+    lastPageSpan.textContent = scoreHistoryList.children.length;
+    currPageSpan.textContent = 1;
+};
+
 const updateGameHistory = function (winner) {
     const totalListItems = scoreHistoryList.children.length;
     const gameHistory = JSON.parse(localStorage.getItem("game_history")) ?? [];
