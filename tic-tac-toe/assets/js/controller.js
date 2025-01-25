@@ -1,4 +1,6 @@
-"use strict";
+import checker from "./helpers/checker.js";
+import generator from "./helpers/generator.js";
+import helper from "./helpers/helper.js";
 
 // ***** DOM ELEMENTS ***** //
 const gameHistoryPopup = document.querySelector(".div-game-history-popup");
@@ -62,16 +64,16 @@ const markSquare = function () {
     // Guard clause.
     if (this.innerHTML !== "") return;
 
-    const currIcon = switchIcon(currMove);
+    const currIcon = helper.switchIcon(currMove);
     this.innerHTML = `<ion-icon name="${currIcon}-outline"></ion-icon>`;
 
     // Get clicked square coordinates.
-    const { row, col } = getSquarePosition(this);
+    const { row, col } = helper.getSquarePosition(this);
     fields[row][col] = currMove;
 
     // Check for a winner.
-    if (checkForWinner(fields)) {
-        gameOver = checkForWinner(fields);
+    if (checker.checkForWinner(fields)) {
+        gameOver = checker.checkForWinner(fields);
         showConfirmationPopup(true, currIcon);
         updateGameHistory(currMove);
         updateScoreBoard(currMove);
@@ -79,18 +81,18 @@ const markSquare = function () {
     }
 
     // Check for a tie.
-    if (checkForTie()) {
-        gameOver = checkForTie(fields);
+    if (checker.checkForTie(fields)) {
+        gameOver = checker.checkForTie(fields);
         showConfirmationPopup(false, currIcon);
         // updateGameHistory(currMove);
         return;
     }
 
     // Alter global variable.
-    currMove = switchMove(currMove);
+    currMove = helper.switchMove(currMove);
 
     // Alter the current move visual.
-    currMoveIcon.setAttribute("name", `${switchIcon(currMove)}-outline`);
+    currMoveIcon.setAttribute("name", `${helper.switchIcon(currMove)}-outline`);
 };
 
 const updateScoreBoard = function (winner) {
@@ -120,19 +122,19 @@ const loadGameHistory = function () {
     if (!localStorage.getItem("game_history")) return;
 
     let listItemID = 0;
-    let listItem = generateListItem(listItemID);
+    let listItem = generator.generateListItem(listItemID);
     const gameHistory = localStorage.getItem("game_history");
     for (const { id, winner, date } of JSON.parse(gameHistory)) {
         if (scoreHistoryList.children.length === 0) scoreHistoryList.appendChild(listItem);
 
         const currInnerList = document.querySelector(`.li-${listItemID} .inner-score-history-list`);
-        currInnerList.appendChild(generateInnerListItem(id, winner, date));
+        currInnerList.appendChild(generator.generateInnerListItem(id, winner, date));
 
         if (id % 5 === 0 || id === JSON.parse(gameHistory).length) {
             scoreHistoryList.appendChild(listItem);
             if (id === JSON.parse(gameHistory).length) break;
 
-            listItem = generateListItem(id / 5);
+            listItem = generator.generateListItem(id / 5);
             scoreHistoryList.appendChild(listItem);
             listItemID = id / 5;
         }
@@ -150,10 +152,10 @@ const updateGameHistory = function (winner) {
     let newItem;
 
     if (totalListItems === 0) {
-        newItem = generateListItem(0);
+        newItem = generator.generateListItem(0);
         scoreHistoryList.appendChild(newItem);
         const latestInnerList = document.querySelector(".li-0 .inner-score-history-list");
-        latestInnerList.appendChild(generateInnerListItem(id, winner, date));
+        latestInnerList.appendChild(generator.generateInnerListItem(id, winner, date));
 
         lastPageSpan.textContent = scoreHistoryList.children.length;
         currPageSpan.textContent = id;
@@ -166,24 +168,18 @@ const updateGameHistory = function (winner) {
             const newItemID = +lastListItem.dataset.itemIndex + 1;
             lastPageSpan.textContent = newItemID + 1;
 
-            newItem = generateListItem(newItemID);
+            newItem = generator.generateListItem(newItemID);
             scoreHistoryList.appendChild(newItem);
             const latestInnerList = document.querySelector(`.li-${newItemID} .inner-score-history-list`);
-            latestInnerList.appendChild(generateInnerListItem(id, winner, date));
+            latestInnerList.appendChild(generator.generateInnerListItem(id, winner, date));
         } else {
-            newItem = generateInnerListItem(id, winner, date);
+            newItem = generator.generateInnerListItem(id, winner, date);
             lastInnerList.appendChild(newItem);
         }
     }
 
     gameHistory.push(newUpdate);
     localStorage.setItem("game_history", JSON.stringify(gameHistory));
-};
-
-const formatGameDate = function (timestamp) {
-    return Intl.DateTimeFormat("en-US", {
-        dateStyle: "short",
-    }).format(timestamp);
 };
 
 const resetLocalStorage = function () {
@@ -202,7 +198,7 @@ const resetLocalStorage = function () {
 
 const resetGameVisuals = function () {
     currMove = "x";
-    currMoveIcon.setAttribute("name", `${switchIcon(currMove)}-outline`);
+    currMoveIcon.setAttribute("name", `${helper.switchIcon(currMove)}-outline`);
     gameSquares.forEach((square) => (square.innerHTML = ""));
 
     resetGameFieldsArray();
