@@ -192,7 +192,7 @@ html {
 }
 
 /* SCORE HISTORY LIST CONTAINER */
-.empty-list .div-score-history-list-container {
+.empty-container {
     display: inherit;
     flex-direction: inherit;
     align-items: center;
@@ -204,18 +204,22 @@ html {
 }
 
 /* EMPTY LIST MESSAGE */
-.div-empty-list-message {
+.empty-container .div-empty-list-message {
     display: inherit;
     justify-content: center;
     text-align: center;
 }
 
+.div-empty-list-message {
+    display: none;
+}
+
 .div-empty-list-message p {
-    font-size: 1.6rem;
+    font-size: 1.8rem;
 }
 
 /* SCORE HISTORY LIST */
-.empty-list .score-history-list {
+.empty-container .score-history-list {
     display: none !important;
 }
 

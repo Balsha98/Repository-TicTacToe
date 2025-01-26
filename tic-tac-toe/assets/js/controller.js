@@ -6,6 +6,7 @@ import helper from "./helpers/helper.js";
 const gameHistoryPopup = document.querySelector(".div-game-history-popup");
 const closePopupBtn = document.querySelector(".btn-close-popup");
 const paginationBtns = document.querySelectorAll(".btn-pagination");
+const scoreHistoryContainer = document.querySelector(".div-score-history-list-container");
 const scoreHistoryList = document.querySelector(".score-history-list");
 const currPageSpan = document.querySelector(".span-curr-page");
 const lastPageSpan = document.querySelector(".span-last-page");
@@ -124,6 +125,9 @@ const loadGameHistory = function () {
     let listItemID = 0;
     let listItem = generator.generateListItem(listItemID);
     const gameHistory = localStorage.getItem("game_history");
+    if (gameHistory.length === 0) return;
+
+    scoreHistoryContainer.classList.remove("empty-container");
     for (const { id, winner, date } of JSON.parse(gameHistory)) {
         if (scoreHistoryList.children.length === 0) scoreHistoryList.appendChild(listItem);
 
@@ -185,6 +189,7 @@ const updateGameHistory = function (winner) {
 const resetLocalStorage = function () {
     localStorage.clear();
 
+    scoreHistoryContainer.classList.add("empty-container");
     [currPageSpan, lastPageSpan].forEach((span) => (span.textContent = 0));
     [...scoreHistoryList.children].forEach((listItem) => listItem.remove());
 
