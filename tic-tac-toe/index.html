@@ -11,7 +11,7 @@
     <title>WebDev | TicTacToe</title>
 </head>
 
-<body>
+<body class="page-body">
     <div class="div-confirmation-popup hide-up">
         <div class="div-confirmation-popup-content">
             <h2 class="confirmation-popup-heading">{}</h2>
@@ -35,9 +35,14 @@
                     </button>
                 </div>
             </header>
-            <ul class="score-history-list">
-                <!-- DYNAMICALLY GENERATED -->
-            </ul>
+            <div class="div-score-history-list-container empty-list">
+                <div class="div-empty-list-message">
+                    <p>The game history is currently empty.</p>
+                </div>
+                <ul class="score-history-list">
+                    <!-- DYNAMICALLY GENERATED -->
+                </ul>
+            </div>
             <div class="div-pagination-counter-container">
                 <span class="span-curr-page">0</span> to <span class="span-last-page">0</span>
             </div>

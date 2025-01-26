@@ -25,7 +25,8 @@ html {
     font-size: 10px;
 }
 
-body {
+/* PAGE BODY */
+.page-body {
     height: 100vh;
     background: var(--to-left-top-gradient);
 }
@@ -190,11 +191,38 @@ body {
     opacity: 0.5;
 }
 
+/* SCORE HISTORY LIST CONTAINER */
+.empty-list .div-score-history-list-container {
+    display: inherit;
+    flex-direction: inherit;
+    align-items: center;
+    justify-content: center;
+}
+
+.div-score-history-list-container {
+    height: calc((5 * 4.8rem) + (4 * 1.2rem));
+}
+
+/* EMPTY LIST MESSAGE */
+.div-empty-list-message {
+    display: inherit;
+    justify-content: center;
+    text-align: center;
+}
+
+.div-empty-list-message p {
+    font-size: 1.6rem;
+}
+
 /* SCORE HISTORY LIST */
+.empty-list .score-history-list {
+    display: none !important;
+}
+
 .score-history-list {
     display: flex;
     gap: 1.2rem;
-    height: calc((5 * 4.8rem) + (4 * 1.2rem));
+    height: inherit;
     border-radius: 0.4rem;
     list-style: none;
     overflow-x: scroll;
