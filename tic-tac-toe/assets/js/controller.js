@@ -38,11 +38,13 @@ const fields = [
 
 // ***** DOM ELEMENTS ***** //
 const showConfirmationPopup = function (isWinner, icon) {
-    if (isWinner)
+    if (isWinner) {
         confirmationHeading.innerHTML = `
             Player <ion-icon name="${icon}-outline"></ion-icon> Wins!
         `;
-    else confirmationHeading.innerHTML = "The Game Is Tied!";
+    } else {
+        confirmationHeading.innerHTML = "The Game Is Tied!";
+    }
 
     confirmationPopup.classList.remove("hide-up");
     popupOverlayDiv.classList.remove("hide-down");
@@ -160,6 +162,7 @@ const updateGameHistory = function (winner) {
         scoreHistoryList.appendChild(newItem);
         const latestInnerList = document.querySelector(".li-0 .inner-score-history-list");
         latestInnerList.appendChild(generator.generateInnerListItem(id, winner, date));
+        scoreHistoryContainer.classList.remove("empty-container");
 
         lastPageSpan.textContent = scoreHistoryList.children.length;
         currPageSpan.textContent = id;
