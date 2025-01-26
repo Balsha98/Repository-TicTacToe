@@ -183,12 +183,13 @@ html {
     font-size: 1.6rem;
     background: var(--to-left-top-gradient);
     border-radius: 50%;
-    transition: opacity 0.5s;
+    transition: all 0.5s;
     cursor: pointer;
 }
 
 .div-pagination-btns-container button:hover {
-    opacity: 0.5;
+    transform: scale(1.1);
+    opacity: 0.8;
 }
 
 /* SCORE HISTORY LIST CONTAINER */
@@ -216,6 +217,7 @@ html {
 
 .div-empty-list-message p {
     font-size: 1.8rem;
+    font-style: italic;
 }
 
 /* SCORE HISTORY LIST */
@@ -363,11 +365,12 @@ html {
     aspect-ratio: 1 / 1;
     background: var(--to-left-top-gradient);
     border-radius: 50%;
-    transition: opacity 0.5s;
+    transition: all 0.5s;
     cursor: pointer;
 }
 
 .dashboard-nav-list-item button:hover {
+    transform: scale(1.1);
     opacity: 0.8;
 }
 
@@ -400,6 +403,7 @@ html {
 
 .leaderboard-header p {
     font-size: 2rem;
+    font-style: italic;
 }
 
 /* SCOREBOARD CONTAINER DIV */
