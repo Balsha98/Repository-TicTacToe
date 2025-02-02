@@ -89,8 +89,10 @@ const controlMarkSquare = function (square) {
         return;
     }
 
+    // Get to the next move.
     model.switchMove();
 
+    // Update the move tracker icon.
     boardView.setCurrIcon(model.getRelatedIcon());
 };
 

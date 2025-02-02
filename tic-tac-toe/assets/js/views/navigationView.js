@@ -1,15 +1,19 @@
 class NavigationView {
-    _navigation = document.querySelector(".dashboard-nav");
+    _btnReset = document.querySelector(".btn-reset-storage");
+    _rotateDegrees = 0;
+
+    _resetStorage(handlerFunction) {
+        // Rotate reset icon.
+        this._btnReset.querySelector("ion-icon").style = `
+            transform: rotate(${(this._rotateDegrees += 360)}deg);
+        `;
+
+        // Call handler.
+        handlerFunction();
+    }
 
     addEventResetStorage(handlerFunction) {
-        this._navigation.addEventListener("click", function (clickEvent) {
-            const btn = clickEvent.target.closest(".btn-reset-storage");
-
-            // Guard clause.
-            if (!btn) return;
-
-            handlerFunction();
-        });
+        this._btnReset.addEventListener("click", this._resetStorage.bind(this, handlerFunction));
     }
 }
 
