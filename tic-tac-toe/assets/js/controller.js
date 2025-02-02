@@ -1,5 +1,6 @@
 import { POSSIBLE_MOVES } from "./config.js";
 import model from "./model.js";
+import resultPopupView from "./views/resultPopupView.js";
 import navigationView from "./views/navigationView.js";
 import boardView from "./views/boardView.js";
 import scoreView from "./views/scoreView.js";
@@ -26,25 +27,7 @@ const currMoveIcon = document.querySelector(".icon-current-move");
 let currHistoryItem = 0;
 let rotateDegrees = 0;
 
-// ***** DOM ELEMENTS ***** //
-const showConfirmationPopup = function (isWinner, icon) {
-    if (isWinner) {
-        confirmationHeading.innerHTML = `
-            Player <ion-icon name="${icon}-outline"></ion-icon> Wins!
-        `;
-    } else {
-        confirmationHeading.innerHTML = "The Game Is Tied!";
-    }
-
-    confirmationPopup.classList.remove("hide-up");
-    popupOverlayDiv.classList.remove("hide-down");
-};
-
-const hideConfirmationPopup = function () {
-    confirmationPopup.classList.add("hide-up");
-    popupOverlayDiv.classList.add("hide-down");
-};
-
+// ***** FUNCTIONS ***** //
 const toggleGameHistoryPopup = function () {
     gameHistoryPopup.classList.toggle("hide-up");
     popupOverlayDiv.classList.toggle("hide-down");
@@ -70,7 +53,7 @@ const controlMarkSquare = function (square) {
     // Check for a winner.
     if (checker.checkForWinner(model.getStateValue("fields"))) {
         model.setStateValue("gameOver", true);
-        showConfirmationPopup(true, currIcon);
+        resultPopupView.showPopup(true, currIcon);
 
         const scoreKey = `score${currMove.toUpperCase()}`;
         const currScore = +model.getStateValue(scoreKey);
@@ -85,7 +68,7 @@ const controlMarkSquare = function (square) {
     // Check for a tie.
     if (checker.checkForTie(model.getStateValue("fields"))) {
         model.setStateValue("gameOver", true);
-        showConfirmationPopup(false, currIcon);
+        resultPopupView.showPopup(false, currIcon);
         return;
     }
 
@@ -108,7 +91,17 @@ const controlResetStorage = function () {
     });
 };
 
+const controlNewGame = function () {
+    // Reset model data.
+    model.setStateValue("gameOver", false);
+    model.resetGameFieldsArray();
+
+    // Clear game board.
+    boardView.resetGameSquares();
+};
+
 const initController = function () {
+    resultPopupView.addEventNewGame(controlNewGame);
     navigationView.addEventResetStorage(controlResetStorage);
     boardView.addEventMarkSquare(controlMarkSquare);
 
@@ -235,11 +228,6 @@ const resetGameVisuals = function () {
 };
 
 // ***** DOM ELEMENTS ***** //
-newGameBtn.addEventListener("click", function () {
-    hideConfirmationPopup();
-    resetGameVisuals();
-});
-
 paginationBtns.forEach((btn) => {
     btn.addEventListener("click", scrollThroughGameHistory);
 });
