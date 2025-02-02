@@ -1,3 +1,6 @@
+import model from "./model.js";
+import boardView from "./views/boardView.js";
+import scoreView from "./views/scoreView.js";
 import checker from "./helpers/checker.js";
 import generator from "./helpers/generator.js";
 import helper from "./helpers/helper.js";
@@ -19,22 +22,11 @@ const resetStorageBtn = document.querySelector(".btn-reset-storage");
 const scoreLabelX = document.querySelector(".score-label-x");
 const scoreLabelO = document.querySelector(".score-label-o");
 const currMoveIcon = document.querySelector(".icon-current-move");
-const gameSquares = document.querySelectorAll(".div-game-square");
+// const gameSquares = document.querySelectorAll(".div-game-square");
 
 // ***** GLOBAL VARIABLES ***** //
-let gameOver = false;
 let currHistoryItem = 0;
-let scoreX = +localStorage.getItem("score_x") ?? 0;
-scoreLabelX.textContent = scoreX;
-let scoreO = +localStorage.getItem("score_o") ?? 0;
-scoreLabelO.textContent = scoreO;
 let rotateDegrees = 0;
-let currMove = "x";
-const fields = [
-    [1, 1, 1],
-    [1, 1, 1],
-    [1, 1, 1],
-];
 
 // ***** DOM ELEMENTS ***** //
 const showConfirmationPopup = function (isWinner, icon) {
@@ -60,43 +52,55 @@ const toggleGameHistoryPopup = function () {
     popupOverlayDiv.classList.toggle("hide-down");
 };
 
-const markSquare = function () {
+const controlMarkSquare = function () {
     // Guard clause.
-    if (gameOver) return;
+    if (model.getStateValue("gameOver")) return;
 
     // Guard clause.
     if (this.innerHTML !== "") return;
 
-    const currIcon = helper.switchIcon(currMove);
-    this.innerHTML = `<ion-icon name="${currIcon}-outline"></ion-icon>`;
+    const currMove = model.getStateValue("currMove");
+    const currIcon = model.getRelatedIcon();
+    this.innerHTML = `
+        <ion-icon name="${currIcon}-outline"></ion-icon>
+    `;
 
     // Get clicked square coordinates.
-    const { row, col } = helper.getSquarePosition(this);
-    fields[row][col] = currMove;
+    const { row, col } = this.dataset;
+    checker.markField(row, col, currMove);
 
     // Check for a winner.
-    if (checker.checkForWinner(fields)) {
-        gameOver = checker.checkForWinner(fields);
+    if (checker.checkForWinner()) {
+        model.setStateValue("gameOver", true);
         showConfirmationPopup(true, currIcon);
-        updateGameHistory(currMove);
-        updateScoreBoard(currMove);
-        return;
-    }
 
-    // Check for a tie.
-    if (checker.checkForTie(fields)) {
-        gameOver = checker.checkForTie(fields);
-        showConfirmationPopup(false, currIcon);
+        const scoreKey = `score${currMove.toUpperCase()}`;
+        const currScore = +model.getStateValue(scoreKey);
+        model.setStateValue(scoreKey, currScore + 1);
+
+        scoreView.updateScoreBoard(currMove, model.getStateValue(scoreKey));
+
         // updateGameHistory(currMove);
         return;
     }
 
-    // Alter global variable.
-    currMove = helper.switchMove(currMove);
+    // Check for a tie.
+    if (checker.checkForTie()) {
+        model.setStateValue("gameOver", true);
+        showConfirmationPopup(false, currIcon);
+        return;
+    }
 
-    // Alter the current move visual.
-    currMoveIcon.setAttribute("name", `${helper.switchIcon(currMove)}-outline`);
+    model.switchMove();
+
+    boardView.setCurrIcon(model.getRelatedIcon());
 };
+
+const initEventHandlers = function () {
+    boardView.addEventMarkSquare(controlMarkSquare);
+};
+
+initEventHandlers();
 
 const updateScoreBoard = function (winner) {
     const winningScore = winner === "x" ? ++scoreX : ++scoreO;
@@ -107,6 +111,9 @@ const updateScoreBoard = function (winner) {
 const scrollThroughGameHistory = function () {
     const direction = this.classList[1].split("-")[1];
     const totalHistoryItems = [...scoreHistoryList.children];
+
+    // Guard clause.
+    if (totalHistoryItems.length === 0) return;
 
     if (direction === "backward") {
         if (currHistoryItem === 0) return;
@@ -213,14 +220,6 @@ const resetGameVisuals = function () {
     gameOver = false;
 };
 
-const resetGameFieldsArray = function () {
-    for (let i in fields) {
-        for (let j in fields[i]) {
-            fields[i][j] = 1;
-        }
-    }
-};
-
 loadGameHistory();
 
 // ***** DOM ELEMENTS ***** //
@@ -238,7 +237,3 @@ paginationBtns.forEach((btn) => {
 });
 
 resetStorageBtn.addEventListener("click", resetLocalStorage);
-
-gameSquares.forEach((gameSquare) => {
-    gameSquare.addEventListener("click", markSquare);
-});
