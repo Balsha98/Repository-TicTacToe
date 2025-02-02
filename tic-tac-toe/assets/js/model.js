@@ -21,7 +21,8 @@ class Model {
 
     _initScore() {
         POSSIBLE_MOVES.forEach((move) => {
-            this._state[`score${move.toUpperCase()}`] = localStorage.getItem(`score_${move}`) ?? 0;
+            const upper = move.toUpperCase();
+            this._state[`score${upper}`] = +localStorage.getItem(`score${upper}`) ?? 0;
         });
     }
 

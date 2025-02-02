@@ -1,4 +1,6 @@
+import { POSSIBLE_MOVES } from "./config.js";
 import model from "./model.js";
+import navigationView from "./views/navigationView.js";
 import boardView from "./views/boardView.js";
 import scoreView from "./views/scoreView.js";
 import checker from "./helpers/checker.js";
@@ -18,9 +20,6 @@ const confirmationHeading = document.querySelector(".confirmation-popup-heading"
 const newGameBtn = document.querySelector(".btn-new-game");
 const popupOverlayDiv = document.querySelector(".div-popup-overlay");
 const gameHistoryBtn = document.querySelector(".btn-game-history");
-const resetStorageBtn = document.querySelector(".btn-reset-storage");
-const scoreLabelX = document.querySelector(".score-label-x");
-const scoreLabelO = document.querySelector(".score-label-o");
 const currMoveIcon = document.querySelector(".icon-current-move");
 
 // ***** GLOBAL VARIABLES ***** //
@@ -51,21 +50,21 @@ const toggleGameHistoryPopup = function () {
     popupOverlayDiv.classList.toggle("hide-down");
 };
 
-const controlMarkSquare = function () {
+const controlMarkSquare = function (square) {
     // Guard clause.
     if (model.getStateValue("gameOver")) return;
 
     // Guard clause.
-    if (this.innerHTML !== "") return;
+    if (square.innerHTML !== "") return;
 
     const currMove = model.getStateValue("currMove");
     const currIcon = model.getRelatedIcon();
-    this.innerHTML = `
+    square.innerHTML = `
         <ion-icon name="${currIcon}-outline"></ion-icon>
     `;
 
     // Get clicked square coordinates.
-    const { row, col } = this.dataset;
+    const { row, col } = square.dataset;
     model.markField(row, col, currMove);
 
     // Check for a winner.
@@ -95,11 +94,31 @@ const controlMarkSquare = function () {
     boardView.setCurrIcon(model.getRelatedIcon());
 };
 
-const initEventHandlers = function () {
-    boardView.addEventMarkSquare(controlMarkSquare);
+const controlResetStorage = function () {
+    model.resetLocalStorage();
+    POSSIBLE_MOVES.forEach((move) => {
+        // Update the model.
+        const scoreKey = `score${move.toUpperCase()}`;
+        model.setStateValue(scoreKey, 0);
+
+        // Update the score view.
+        scoreView.updateScoreBoard(move, 0);
+    });
 };
 
-initEventHandlers();
+const initController = function () {
+    navigationView.addEventResetStorage(controlResetStorage);
+    boardView.addEventMarkSquare(controlMarkSquare);
+
+    const scores = [];
+    POSSIBLE_MOVES.forEach((move) => {
+        scores.push(model.getStateValue(`score${move.toUpperCase()}`));
+    });
+
+    scoreView.initScoreBoard(scores);
+};
+
+initController();
 
 const scrollThroughGameHistory = function () {
     const direction = this.classList[1].split("-")[1];
@@ -226,5 +245,3 @@ paginationBtns.forEach((btn) => {
 [gameHistoryBtn, closePopupBtn].forEach((btn) => {
     btn.addEventListener("click", toggleGameHistoryPopup);
 });
-
-resetStorageBtn.addEventListener("click", resetLocalStorage);

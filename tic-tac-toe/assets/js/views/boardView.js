@@ -1,14 +1,25 @@
 class BoardView {
     _gameBoard = document.querySelector(".div-game-board-container");
 
+    setCurrIcon(iconName) {
+        this._gameBoard.querySelector(".icon-current-move").setAttribute("name", `${iconName}-outline`);
+    }
+
     addEventMarkSquare(handlerFunction) {
-        this._gameBoard.querySelectorAll(".div-game-square").forEach((square) => {
-            square.addEventListener("click", handlerFunction);
+        this._gameBoard.addEventListener("click", function (clickEvent) {
+            const square = clickEvent.target.closest(".div-game-square");
+
+            // Guard clause.
+            if (!square) return;
+
+            handlerFunction(square);
         });
     }
 
-    setCurrIcon(iconName) {
-        this._gameBoard.querySelector(".icon-current-move").setAttribute("name", `${iconName}-outline`);
+    resetGameSquares() {
+        this._gameBoard.querySelectorAll(".div-game-square").forEach((squareDiv) => {
+            squareDiv.innerHTML = "";
+        });
     }
 }
 

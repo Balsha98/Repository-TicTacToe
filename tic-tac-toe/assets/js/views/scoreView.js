@@ -1,12 +1,8 @@
 import { POSSIBLE_MOVES } from "../config.js";
 
 class ScoreView {
-    constructor() {
-        this._initScoreBoard();
-    }
-
-    _initScoreBoard() {
-        POSSIBLE_MOVES.forEach((move) => this.updateScoreBoard(move, 0));
+    initScoreBoard(scores) {
+        POSSIBLE_MOVES.forEach((move, i) => this.updateScoreBoard(move, scores[i]));
     }
 
     updateScoreBoard(move, score) {
