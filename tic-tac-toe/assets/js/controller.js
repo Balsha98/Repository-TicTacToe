@@ -1,6 +1,7 @@
 import { POSSIBLE_MOVES } from "./config.js";
 import model from "./model.js";
 import resultPopupView from "./views/resultPopupView.js";
+import historyPopupView from "./views/historyPopupView.js";
 import navigationView from "./views/navigationView.js";
 import boardView from "./views/boardView.js";
 import scoreView from "./views/scoreView.js";
@@ -16,21 +17,37 @@ const scoreHistoryContainer = document.querySelector(".div-score-history-list-co
 const scoreHistoryList = document.querySelector(".score-history-list");
 const currPageSpan = document.querySelector(".span-curr-page");
 const lastPageSpan = document.querySelector(".span-last-page");
-const confirmationPopup = document.querySelector(".div-confirmation-popup");
-const confirmationHeading = document.querySelector(".confirmation-popup-heading");
-const newGameBtn = document.querySelector(".btn-new-game");
 const popupOverlayDiv = document.querySelector(".div-popup-overlay");
-const gameHistoryBtn = document.querySelector(".btn-game-history");
-const currMoveIcon = document.querySelector(".icon-current-move");
 
 // ***** GLOBAL VARIABLES ***** //
 let currHistoryItem = 0;
-let rotateDegrees = 0;
 
 // ***** FUNCTIONS ***** //
-const toggleGameHistoryPopup = function () {
-    gameHistoryPopup.classList.toggle("hide-up");
-    popupOverlayDiv.classList.toggle("hide-down");
+const controlToggleHistory = function () {
+    historyPopupView.togglePopup();
+};
+
+const controlResetStorage = function () {
+    model.resetLocalStorage();
+    POSSIBLE_MOVES.forEach((move) => {
+        // Update the model.
+        const scoreKey = `score${move.toUpperCase()}`;
+        model.setStateValue(scoreKey, 0);
+
+        // Update the score view.
+        scoreView.updateScoreBoard(move, 0);
+    });
+};
+
+const controlNewGame = function () {
+    // Reset model data.
+    model.setStateValue("currMove", "x");
+    model.setStateValue("gameOver", false);
+    model.resetGameFieldsArray();
+
+    // Reset game board.
+    boardView.setCurrIcon(model.getRelatedIcon());
+    boardView.resetGameSquares();
 };
 
 const controlMarkSquare = function (square) {
@@ -79,29 +96,10 @@ const controlMarkSquare = function (square) {
     boardView.setCurrIcon(model.getRelatedIcon());
 };
 
-const controlResetStorage = function () {
-    model.resetLocalStorage();
-    POSSIBLE_MOVES.forEach((move) => {
-        // Update the model.
-        const scoreKey = `score${move.toUpperCase()}`;
-        model.setStateValue(scoreKey, 0);
-
-        // Update the score view.
-        scoreView.updateScoreBoard(move, 0);
-    });
-};
-
-const controlNewGame = function () {
-    // Reset model data.
-    model.setStateValue("gameOver", false);
-    model.resetGameFieldsArray();
-
-    // Clear game board.
-    boardView.resetGameSquares();
-};
-
 const initController = function () {
     resultPopupView.addEventNewGame(controlNewGame);
+    historyPopupView.addEventClosePopup(controlToggleHistory);
+    navigationView.addEventShowHistory(controlToggleHistory);
     navigationView.addEventResetStorage(controlResetStorage);
     boardView.addEventMarkSquare(controlMarkSquare);
 
@@ -218,20 +216,7 @@ const resetLocalStorage = function () {
     scoreX = 0;
 };
 
-const resetGameVisuals = function () {
-    currMove = "x";
-    currMoveIcon.setAttribute("name", `${helper.switchIcon(currMove)}-outline`);
-    gameSquares.forEach((square) => (square.innerHTML = ""));
-
-    resetGameFieldsArray();
-    gameOver = false;
-};
-
 // ***** DOM ELEMENTS ***** //
 paginationBtns.forEach((btn) => {
     btn.addEventListener("click", scrollThroughGameHistory);
-});
-
-[gameHistoryBtn, closePopupBtn].forEach((btn) => {
-    btn.addEventListener("click", toggleGameHistoryPopup);
 });
