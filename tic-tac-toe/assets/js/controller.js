@@ -22,7 +22,6 @@ const resetStorageBtn = document.querySelector(".btn-reset-storage");
 const scoreLabelX = document.querySelector(".score-label-x");
 const scoreLabelO = document.querySelector(".score-label-o");
 const currMoveIcon = document.querySelector(".icon-current-move");
-// const gameSquares = document.querySelectorAll(".div-game-square");
 
 // ***** GLOBAL VARIABLES ***** //
 let currHistoryItem = 0;
@@ -67,10 +66,10 @@ const controlMarkSquare = function () {
 
     // Get clicked square coordinates.
     const { row, col } = this.dataset;
-    checker.markField(row, col, currMove);
+    model.markField(row, col, currMove);
 
     // Check for a winner.
-    if (checker.checkForWinner()) {
+    if (checker.checkForWinner(model.getStateValue("fields"))) {
         model.setStateValue("gameOver", true);
         showConfirmationPopup(true, currIcon);
 
@@ -85,7 +84,7 @@ const controlMarkSquare = function () {
     }
 
     // Check for a tie.
-    if (checker.checkForTie()) {
+    if (checker.checkForTie(model.getStateValue("fields"))) {
         model.setStateValue("gameOver", true);
         showConfirmationPopup(false, currIcon);
         return;
@@ -101,12 +100,6 @@ const initEventHandlers = function () {
 };
 
 initEventHandlers();
-
-const updateScoreBoard = function (winner) {
-    const winningScore = winner === "x" ? ++scoreX : ++scoreO;
-    document.querySelector(`.score-label-${winner}`).textContent = winningScore;
-    localStorage.setItem(`score_${winner}`, +winningScore);
-};
 
 const scrollThroughGameHistory = function () {
     const direction = this.classList[1].split("-")[1];
@@ -129,11 +122,11 @@ const scrollThroughGameHistory = function () {
 };
 
 const loadGameHistory = function () {
-    if (!localStorage.getItem("game_history")) return;
+    if (!localStorage.getItem("gameHistory")) return;
 
     let listItemID = 0;
     let listItem = generator.generateListItem(listItemID);
-    const gameHistory = localStorage.getItem("game_history");
+    const gameHistory = localStorage.getItem("gameHistory");
     if (gameHistory.length === 0) return;
 
     scoreHistoryContainer.classList.remove("empty-container");
@@ -159,7 +152,7 @@ const loadGameHistory = function () {
 
 const updateGameHistory = function (winner) {
     const totalListItems = scoreHistoryList.children.length;
-    const gameHistory = JSON.parse(localStorage.getItem("game_history")) ?? [];
+    const gameHistory = JSON.parse(localStorage.getItem("gameHistory")) ?? [];
     const newUpdate = { id: gameHistory.length + 1, winner, date: new Date().getTime() };
     const { id, date } = newUpdate;
     let newItem;
@@ -193,7 +186,7 @@ const updateGameHistory = function (winner) {
     }
 
     gameHistory.push(newUpdate);
-    localStorage.setItem("game_history", JSON.stringify(gameHistory));
+    localStorage.setItem("gameHistory", JSON.stringify(gameHistory));
 };
 
 const resetLocalStorage = function () {
@@ -219,8 +212,6 @@ const resetGameVisuals = function () {
     resetGameFieldsArray();
     gameOver = false;
 };
-
-loadGameHistory();
 
 // ***** DOM ELEMENTS ***** //
 newGameBtn.addEventListener("click", function () {

@@ -1,18 +1,9 @@
 class Checker {
     _winingOptions = ["xxx", "ooo"];
-    _fields = [
-        [1, 1, 1],
-        [1, 1, 1],
-        [1, 1, 1],
-    ];
 
-    markField(row, col, move) {
-        this._fields[row][col] = move;
-    }
-
-    _checkHorizontalFields() {
+    _checkHorizontalFields(fields) {
         for (const option of this._winingOptions) {
-            for (const row of this._fields) {
+            for (const row of fields) {
                 if (row.join("") === option) return true;
             }
         }
@@ -20,11 +11,11 @@ class Checker {
         return false;
     }
 
-    _checkVerticalFields() {
+    _checkVerticalFields(fields) {
         for (const option of this._winingOptions) {
-            for (const counter in this._fields) {
+            for (const counter in fields) {
                 let result = "";
-                for (const row of this._fields) {
+                for (const row of fields) {
                     result += row[counter];
                 }
 
@@ -35,15 +26,15 @@ class Checker {
         return false;
     }
 
-    _checkDiagonalFields() {
+    _checkDiagonalFields(fields) {
         for (const option of this._winingOptions) {
             for (const direction of ["left", "right"]) {
                 const diagSquares = [0, 1, 2];
                 if (direction === "right") diagSquares.reverse();
 
                 let result = "";
-                for (const counter in this._fields) {
-                    result += this._fields[counter][diagSquares[counter]];
+                for (const counter in fields) {
+                    result += fields[counter][diagSquares[counter]];
                 }
 
                 if (result === option) return true;
@@ -53,29 +44,21 @@ class Checker {
         return false;
     }
 
-    checkForWinner() {
-        if (this._checkHorizontalFields()) return true;
-        if (this._checkVerticalFields()) return true;
-        if (this._checkDiagonalFields()) return true;
+    checkForWinner(fields) {
+        if (this._checkHorizontalFields(fields)) return true;
+        if (this._checkVerticalFields(fields)) return true;
+        if (this._checkDiagonalFields(fields)) return true;
 
         return false;
     }
 
-    checkForTie() {
+    checkForTie(fields) {
         let counter = 0;
-        this._fields.forEach((row) => {
+        fields.forEach((row) => {
             if (!row.includes(1)) counter++;
         });
 
-        return counter === this._fields.length;
-    }
-
-    resetGameFieldsArray() {
-        for (let i in this._fields) {
-            for (let j in this._fields[i]) {
-                this._fields[i][j] = 1;
-            }
-        }
+        return counter === fields.length;
     }
 }
 
