@@ -45,13 +45,13 @@ const controlScrollHistory = function (btn) {
     listToView.scrollIntoView({ behavior: "smooth" });
 };
 
-const controlResetStorage = function () {
+const controlClearStorage = function () {
     model.clearLocalStorage();
+    model.setStateValue("gameHistory", []);
     historyPopupView.clearHistoryList();
     POSSIBLE_MOVES.forEach((move) => {
         // Update the model.
-        const scoreKey = `score${move.toUpperCase()}`;
-        model.setStateValue(scoreKey, 0);
+        model.setStateValue(`score${move.toUpperCase()}`, 0);
 
         // Update the score view.
         scoreView.updateScoreBoard(move, 0);
@@ -116,7 +116,7 @@ const initController = function () {
     historyPopupView.addEventClosePopup(controlToggleHistory);
     paginationView.addEventScrollHistory(controlScrollHistory);
     navigationView.addEventShowHistory(controlToggleHistory);
-    navigationView.addEventResetStorage(controlResetStorage);
+    navigationView.addEventClearStorage(controlClearStorage);
     boardView.addEventMarkSquare(controlMarkSquare);
 
     const scores = [];

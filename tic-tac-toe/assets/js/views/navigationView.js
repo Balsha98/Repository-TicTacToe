@@ -17,7 +17,7 @@ class NavigationView {
         handlerFunction();
     }
 
-    addEventResetStorage(handlerFunction) {
+    addEventClearStorage(handlerFunction) {
         this._btnReset.addEventListener("click", this._resetStorage.bind(this, handlerFunction));
     }
 }

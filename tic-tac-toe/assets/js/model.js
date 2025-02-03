@@ -56,7 +56,7 @@ class Model {
     setStateValue(key, value) {
         if (key.startsWith("score")) {
             localStorage.setItem(key, value);
-        } else if (value instanceof Object) {
+        } else if (value instanceof Object && !Array.isArray(value)) {
             this._state.gameHistory.push(value);
             localStorage.setItem(key, JSON.stringify(this._state.gameHistory));
             return;
