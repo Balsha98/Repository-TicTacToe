@@ -10,11 +10,6 @@ import checker from "./helpers/checker.js";
 import generator from "./helpers/generator.js";
 import helper from "./helpers/helper.js";
 
-// ***** DOM ELEMENTS ***** //
-const paginationBtns = document.querySelectorAll(".btn-pagination");
-const currPageSpan = document.querySelector(".span-curr-page");
-const lastPageSpan = document.querySelector(".span-last-page");
-
 // ***** GLOBAL VARIABLES ***** //
 let currHistoryItem = 0;
 
@@ -80,7 +75,9 @@ const controlMarkSquare = function (square) {
         scoreView.updateScoreBoard(currMove, model.getStateValue(scoreKey));
 
         // Update history list.
-        historyPopupView.updateHistory(currMove);
+        const latestGame = model.getLatestHistoryUpdate();
+        historyPopupView.updateHistory(latestGame);
+        model.setStateValue("gameHistory", [latestGame]);
 
         return;
     }

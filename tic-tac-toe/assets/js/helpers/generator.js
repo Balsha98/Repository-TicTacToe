@@ -1,3 +1,5 @@
+import helper from "./helper.js";
+
 class Generator {
     generateListItem(itemIndex) {
         const listItem = document.createElement("li");
@@ -12,7 +14,7 @@ class Generator {
         return listItem;
     }
 
-    generateInnerListItem(id, winner, date) {
+    generateInnerListItem(id, move, date) {
         const listItem = document.createElement("li");
         listItem.classList.add("inner-score-history-list-item");
 
@@ -25,7 +27,7 @@ class Generator {
 
         const descText = document.createElement("p");
         descText.innerHTML = `
-            Player <ion-icon name="${helper.switchIcon(winner)}-outline"></ion-icon> won this game.
+            Player <ion-icon name="${move === "x" ? "close" : "radio-button-off"}-outline"></ion-icon> won this game.
         `;
 
         itemDiv.appendChild(descText);

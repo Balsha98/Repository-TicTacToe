@@ -6,9 +6,10 @@ class HistoryPopupView {
     _btnClose = document.querySelector(".btn-close-popup");
     _historyContainer = document.querySelector(".div-score-history-list-container");
     _historyList = document.querySelector(".score-history-list");
+    _spanCurrPage = document.querySelector(".span-curr-page");
+    _spanLastPage = document.querySelector(".span-last-page");
 
     initHistory(gameHistory) {
-        console.log(gameHistory);
         if (!gameHistory) return;
 
         let listItemID = 0;
@@ -32,13 +33,12 @@ class HistoryPopupView {
             }
         }
 
-        lastPageSpan.textContent = this._historyList.children.length;
-        currPageSpan.textContent = 1;
+        this._spanLastPage.textContent = this._historyList.children.length;
+        this._spanCurrPage.textContent = 1;
     }
 
-    updateHistory(move) {
+    updateHistory(newUpdate) {
         const totalListItems = this._historyList.children.length;
-        const newUpdate = { id: gameHistory.length + 1, winner: move, date: new Date().getTime() };
         const { id, winner, date } = newUpdate;
 
         let newItem;
@@ -49,8 +49,8 @@ class HistoryPopupView {
             latestInnerList.appendChild(generator.generateInnerListItem(id, winner, date));
             this._historyContainer.classList.remove("empty-container");
 
-            lastPageSpan.textContent = this._historyList.children.length;
-            currPageSpan.textContent = id;
+            this._spanLastPage.textContent = this._historyList.children.length;
+            this._spanCurrPage.textContent = id;
         } else {
             const lastListItem = this._historyList.children[totalListItems - 1];
             const lastInnerList = document.querySelector(`.${lastListItem.classList[1]} .inner-score-history-list`);
@@ -58,7 +58,7 @@ class HistoryPopupView {
 
             if (totalInnerItems === 5) {
                 const newItemID = +lastListItem.dataset.itemIndex + 1;
-                lastPageSpan.textContent = newItemID + 1;
+                this._spanLastPage.textContent = newItemID + 1;
 
                 newItem = generator.generateListItem(newItemID);
                 this._historyList.appendChild(newItem);
@@ -69,9 +69,6 @@ class HistoryPopupView {
                 lastInnerList.appendChild(newItem);
             }
         }
-
-        gameHistory.push(newUpdate);
-        localStorage.setItem("gameHistory", JSON.stringify(gameHistory));
     }
 
     addEventClosePopup(handlerFunction) {

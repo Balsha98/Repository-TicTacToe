@@ -19,6 +19,8 @@ class Model {
         this._initGameHistory();
     }
 
+    // ***** INITIALIZERS ***** //
+
     _initScore() {
         POSSIBLE_MOVES.forEach((move) => {
             const upper = move.toUpperCase();
@@ -30,9 +32,21 @@ class Model {
         this._state.gameHistory = JSON.parse(localStorage.getItem("gameHistory")) ?? [];
     }
 
+    // ***** GETTERS ***** //
+
     getStateValue(key) {
         return this._state[key];
     }
+
+    getRelatedIcon() {
+        return this._state.currMove === "x" ? "close" : "radio-button-off";
+    }
+
+    getLatestHistoryUpdate() {
+        return { id: this._state.gameHistory.length + 1, winner: this._state.currMove, date: new Date().getTime() };
+    }
+
+    // ***** SETTERS ***** //
 
     setStateValue(key, value) {
         this._state[key] = value;
@@ -40,7 +54,8 @@ class Model {
         if (key.startsWith("score")) {
             localStorage.setItem(key, value);
         } else if (Array.isArray(value)) {
-            localStorage.setItem(key, JSON.stringify(value));
+            value.forEach((object) => this._state.gameHistory.push(object));
+            localStorage.setItem(key, JSON.stringify(this._state.gameHistory));
         }
     }
 
@@ -48,13 +63,11 @@ class Model {
         return (this._state.currMove = this._state.currMove === "x" ? "o" : "x");
     }
 
-    getRelatedIcon() {
-        return this._state.currMove === "x" ? "close" : "radio-button-off";
-    }
-
     markField(row, col, move) {
         this._state.fields[row][col] = move;
     }
+
+    // ***** RESETTERS ***** //
 
     resetGameFieldsArray() {
         this._state.fields.forEach((_, i) => {
