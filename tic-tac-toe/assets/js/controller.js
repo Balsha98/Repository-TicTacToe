@@ -24,6 +24,16 @@ const controlToggleHistory = function () {
     historyPopupView.togglePopup();
 };
 
+const controlScrollHistory = function (currHistoryItem) {
+    const totalHistoryItems = [...historyPopupView.getHistoryList().children];
+
+    // Guard clause.
+    if (totalHistoryItems.length === 0) return;
+
+    const listToView = totalHistoryItems.find((list) => +list.dataset.itemIndex === currHistoryItem);
+    listToView.scrollIntoView({ behavior: "smooth" });
+};
+
 const controlResetStorage = function () {
     model.clearLocalStorage();
     historyPopupView.clearHistoryList();
@@ -93,6 +103,7 @@ const initController = function () {
     resultPopupView.addEventNewGame(controlNewGame);
     historyPopupView.initHistory(model.getStateValue("gameHistory"));
     historyPopupView.addEventClosePopup(controlToggleHistory);
+    paginationView.addEventScrollHistory(controlScrollHistory);
     navigationView.addEventShowHistory(controlToggleHistory);
     navigationView.addEventResetStorage(controlResetStorage);
     boardView.addEventMarkSquare(controlMarkSquare);

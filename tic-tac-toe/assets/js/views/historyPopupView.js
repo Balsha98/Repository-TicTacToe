@@ -38,6 +38,10 @@ class HistoryPopupView extends PopupView {
         this._spanCurrPage.textContent = 1;
     }
 
+    getHistoryList() {
+        return this._historyList;
+    }
+
     updateHistory(newUpdate) {
         const totalListItems = this._historyList.children.length;
         const { id, icon, date } = newUpdate;
