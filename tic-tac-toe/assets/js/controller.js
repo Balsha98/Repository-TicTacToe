@@ -7,8 +7,6 @@ import navigationView from "./views/navigationView.js";
 import boardView from "./views/boardView.js";
 import scoreView from "./views/scoreView.js";
 import checker from "./helpers/checker.js";
-import generator from "./helpers/generator.js";
-import helper from "./helpers/helper.js";
 
 // ***** GLOBAL VARIABLES ***** //
 let currHistoryItem = 0;
@@ -16,10 +14,6 @@ let currHistoryItem = 0;
 // ***** FUNCTIONS ***** //
 const controlToggleHistory = function () {
     historyPopupView.togglePopup();
-};
-
-const controlLoadHistory = function () {
-    historyPopupView.initHistory(model.getStateValue("gameHistory"));
 };
 
 const controlResetStorage = function () {
@@ -61,9 +55,10 @@ const controlMarkSquare = function (square) {
     // Get clicked square coordinates.
     const { row, col } = square.dataset;
     model.markField(row, col, currMove);
+    const gameFields = model.getStateValue("fields");
 
     // Check for a winner.
-    if (checker.checkForWinner(model.getStateValue("fields"))) {
+    if (checker.checkForWinner(gameFields)) {
         model.setStateValue("gameOver", true);
         resultPopupView.showPopup(true, currIcon);
 
@@ -76,14 +71,14 @@ const controlMarkSquare = function (square) {
 
         // Update history list.
         const latestGame = model.getLatestHistoryUpdate();
+        model.setStateValue("gameHistory", latestGame);
         historyPopupView.updateHistory(latestGame);
-        model.setStateValue("gameHistory", [latestGame]);
 
         return;
     }
 
     // Check for a tie.
-    if (checker.checkForTie(model.getStateValue("fields"))) {
+    if (checker.checkForTie(gameFields)) {
         model.setStateValue("gameOver", true);
         resultPopupView.showPopup(false, currIcon);
         return;
@@ -97,9 +92,8 @@ const controlMarkSquare = function (square) {
 };
 
 const initController = function () {
-    controlLoadHistory();
-
     resultPopupView.addEventNewGame(controlNewGame);
+    historyPopupView.initHistory(model.getStateValue("gameHistory"));
     historyPopupView.addEventClosePopup(controlToggleHistory);
     navigationView.addEventShowHistory(controlToggleHistory);
     navigationView.addEventResetStorage(controlResetStorage);

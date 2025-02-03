@@ -17,15 +17,15 @@ class HistoryPopupView {
         if (gameHistory.length === 0) return;
 
         this._historyContainer.classList.remove("empty-container");
-        for (const { id, winner, date } of gameHistory) {
+        for (const { id, icon, date } of gameHistory) {
             if (this._historyList.children.length === 0) this._historyList.appendChild(listItem);
 
             const currInnerList = document.querySelector(`.li-${listItemID} .inner-score-history-list`);
-            currInnerList.appendChild(generator.generateInnerListItem(id, winner, date));
+            currInnerList.appendChild(generator.generateInnerListItem(id, icon, date));
 
             if (id % 5 === 0 || id === gameHistory.length) {
                 this._historyList.appendChild(listItem);
-                if (id === JSON.parse(gameHistory).length) break;
+                if (id === gameHistory.length) break;
 
                 listItem = generator.generateListItem(id / 5);
                 this._historyList.appendChild(listItem);
@@ -39,14 +39,14 @@ class HistoryPopupView {
 
     updateHistory(newUpdate) {
         const totalListItems = this._historyList.children.length;
-        const { id, winner, date } = newUpdate;
+        const { id, icon, date } = newUpdate;
 
         let newItem;
         if (totalListItems === 0) {
             newItem = generator.generateListItem(0);
             this._historyList.appendChild(newItem);
             const latestInnerList = document.querySelector(".li-0 .inner-score-history-list");
-            latestInnerList.appendChild(generator.generateInnerListItem(id, winner, date));
+            latestInnerList.appendChild(generator.generateInnerListItem(id, icon, date));
             this._historyContainer.classList.remove("empty-container");
 
             this._spanLastPage.textContent = this._historyList.children.length;
@@ -63,9 +63,9 @@ class HistoryPopupView {
                 newItem = generator.generateListItem(newItemID);
                 this._historyList.appendChild(newItem);
                 const latestInnerList = document.querySelector(`.li-${newItemID} .inner-score-history-list`);
-                latestInnerList.appendChild(generator.generateInnerListItem(id, winner, date));
+                latestInnerList.appendChild(generator.generateInnerListItem(id, icon, date));
             } else {
-                newItem = generator.generateInnerListItem(id, winner, date);
+                newItem = generator.generateInnerListItem(id, icon, date);
                 lastInnerList.appendChild(newItem);
             }
         }

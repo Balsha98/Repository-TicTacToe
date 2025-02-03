@@ -14,7 +14,7 @@ class Generator {
         return listItem;
     }
 
-    generateInnerListItem(id, move, date) {
+    generateInnerListItem(id, icon, date) {
         const listItem = document.createElement("li");
         listItem.classList.add("inner-score-history-list-item");
 
@@ -27,7 +27,7 @@ class Generator {
 
         const descText = document.createElement("p");
         descText.innerHTML = `
-            Player <ion-icon name="${move === "x" ? "close" : "radio-button-off"}-outline"></ion-icon> won this game.
+            Player <ion-icon name="${icon}-outline"></ion-icon> won this game.
         `;
 
         itemDiv.appendChild(descText);

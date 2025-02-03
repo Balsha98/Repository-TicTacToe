@@ -43,20 +43,27 @@ class Model {
     }
 
     getLatestHistoryUpdate() {
-        return { id: this._state.gameHistory.length + 1, winner: this._state.currMove, date: new Date().getTime() };
+        return {
+            id: this._state.gameHistory.length + 1,
+            winner: this._state.currMove,
+            icon: this.getRelatedIcon(),
+            date: new Date().getTime(),
+        };
     }
 
     // ***** SETTERS ***** //
 
     setStateValue(key, value) {
-        this._state[key] = value;
-
         if (key.startsWith("score")) {
             localStorage.setItem(key, value);
-        } else if (Array.isArray(value)) {
-            value.forEach((object) => this._state.gameHistory.push(object));
+        } else if (value instanceof Object) {
+            this._state.gameHistory.push(value);
             localStorage.setItem(key, JSON.stringify(this._state.gameHistory));
+
+            return;
         }
+
+        this._state[key] = value;
     }
 
     switchMove() {
