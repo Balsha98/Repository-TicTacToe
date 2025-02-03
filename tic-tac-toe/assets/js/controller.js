@@ -8,10 +8,18 @@ import boardView from "./views/boardView.js";
 import scoreView from "./views/scoreView.js";
 import checker from "./helpers/checker.js";
 
-// ***** GLOBAL VARIABLES ***** //
-let currHistoryItem = 0;
-
 // ***** FUNCTIONS ***** //
+const controlNewGame = function () {
+    // Reset model data.
+    model.setStateValue("currMove", "x");
+    model.setStateValue("gameOver", false);
+    model.resetGameFieldsArray();
+
+    // Reset game board.
+    boardView.setCurrIcon(model.getRelatedIcon());
+    boardView.resetGameSquares();
+};
+
 const controlToggleHistory = function () {
     historyPopupView.togglePopup();
 };
@@ -27,17 +35,6 @@ const controlResetStorage = function () {
         // Update the score view.
         scoreView.updateScoreBoard(move, 0);
     });
-};
-
-const controlNewGame = function () {
-    // Reset model data.
-    model.setStateValue("currMove", "x");
-    model.setStateValue("gameOver", false);
-    model.resetGameFieldsArray();
-
-    // Reset game board.
-    boardView.setCurrIcon(model.getRelatedIcon());
-    boardView.resetGameSquares();
 };
 
 const controlMarkSquare = function (square) {
@@ -109,23 +106,3 @@ const initController = function () {
 };
 
 initController();
-
-const scrollThroughGameHistory = function () {
-    const direction = this.classList[1].split("-")[1];
-    const totalHistoryItems = [...scoreHistoryList.children];
-
-    // Guard clause.
-    if (totalHistoryItems.length === 0) return;
-
-    if (direction === "backward") {
-        if (currHistoryItem === 0) return;
-        currPageSpan.textContent = --currHistoryItem + 1;
-    } else if (direction === "forward") {
-        if (currHistoryItem === totalHistoryItems.length - 1) return;
-        currPageSpan.textContent = ++currHistoryItem + 1;
-    }
-
-    totalHistoryItems
-        .find((list) => +list.dataset.itemIndex === currHistoryItem)
-        .scrollIntoView({ behavior: "smooth" });
-};
