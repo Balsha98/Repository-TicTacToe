@@ -1,6 +1,7 @@
+import PopupView from "./popupView.js";
 import generator from "./../helpers/generator.js";
 
-class HistoryPopupView {
+class HistoryPopupView extends PopupView {
     _overlay = document.querySelector(".div-popup-overlay");
     _popup = document.querySelector(".div-game-history-popup");
     _btnClose = document.querySelector(".btn-close-popup");
@@ -75,9 +76,10 @@ class HistoryPopupView {
         this._btnClose.addEventListener("click", handlerFunction);
     }
 
-    togglePopup() {
-        this._overlay.classList.toggle("hide-down");
-        this._popup.classList.toggle("hide-up");
+    clearHistoryList() {
+        this._historyContainer.classList.add("empty-container");
+        [this._spanCurrPage, this._spanLastPage].forEach((span) => (span.textContent = 0));
+        [...this._historyList.children].forEach((listItem) => listItem.remove());
     }
 }
 

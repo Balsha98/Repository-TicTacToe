@@ -59,7 +59,6 @@ class Model {
         } else if (value instanceof Object) {
             this._state.gameHistory.push(value);
             localStorage.setItem(key, JSON.stringify(this._state.gameHistory));
-
             return;
         }
 
@@ -84,7 +83,7 @@ class Model {
         });
     }
 
-    resetLocalStorage() {
+    clearLocalStorage() {
         localStorage.clear();
     }
 }

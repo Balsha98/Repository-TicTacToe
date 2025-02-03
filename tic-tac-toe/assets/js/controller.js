@@ -17,7 +17,8 @@ const controlToggleHistory = function () {
 };
 
 const controlResetStorage = function () {
-    model.resetLocalStorage();
+    model.clearLocalStorage();
+    historyPopupView.clearHistoryList();
     POSSIBLE_MOVES.forEach((move) => {
         // Update the model.
         const scoreKey = `score${move.toUpperCase()}`;
@@ -127,19 +128,4 @@ const scrollThroughGameHistory = function () {
     totalHistoryItems
         .find((list) => +list.dataset.itemIndex === currHistoryItem)
         .scrollIntoView({ behavior: "smooth" });
-};
-
-const resetLocalStorage = function () {
-    localStorage.clear();
-
-    scoreHistoryContainer.classList.add("empty-container");
-    [currPageSpan, lastPageSpan].forEach((span) => (span.textContent = 0));
-    [...scoreHistoryList.children].forEach((listItem) => listItem.remove());
-
-    [scoreLabelX, scoreLabelO].forEach((label) => (label.textContent = 0));
-    const resetIcon = document.querySelector(`.${this.classList[0]} ion-icon`);
-    resetIcon.style = `transform: rotate(${(rotateDegrees += 360)}deg);`;
-
-    scoreO = 0;
-    scoreX = 0;
 };

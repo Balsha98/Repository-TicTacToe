@@ -1,4 +1,6 @@
-class ResultPopupView {
+import PopupView from "./popupView.js";
+
+class ResultPopupView extends PopupView {
     _overlay = document.querySelector(".div-popup-overlay");
     _popup = document.querySelector(".div-confirmation-popup");
     _btnNewGame = document.querySelector(".btn-new-game");
@@ -24,11 +26,6 @@ class ResultPopupView {
 
     addEventNewGame(handlerFunction) {
         this._btnNewGame.addEventListener("click", this._resetGame.bind(this, handlerFunction));
-    }
-
-    togglePopup() {
-        this._overlay.classList.toggle("hide-down");
-        this._popup.classList.toggle("hide-up");
     }
 }
 
