@@ -27,7 +27,7 @@ class Model {
     }
 
     _initGameHistory() {
-        this._state.gameHistory = localStorage.getItem("gameHistory") ?? [];
+        this._state.gameHistory = JSON.parse(localStorage.getItem("gameHistory")) ?? [];
     }
 
     getStateValue(key) {

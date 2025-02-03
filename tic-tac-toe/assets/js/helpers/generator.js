@@ -1,10 +1,4 @@
-import helper from "./helper.js";
-
 class Generator {
-    #generateIonIcon(icon) {
-        return `<ion-icon name="${helper.switchIcon(icon)}-outline"></ion-icon>`;
-    }
-
     generateListItem(itemIndex) {
         const listItem = document.createElement("li");
         listItem.classList.add("score-history-list-item");
@@ -30,7 +24,10 @@ class Generator {
         itemDiv.appendChild(idSpan);
 
         const descText = document.createElement("p");
-        descText.innerHTML = `Player ${this.#generateIonIcon(winner)} won this game.`;
+        descText.innerHTML = `
+            Player <ion-icon name="${helper.switchIcon(winner)}-outline"></ion-icon> won this game.
+        `;
+
         itemDiv.appendChild(descText);
         listItem.appendChild(itemDiv);
 

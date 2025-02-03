@@ -2,6 +2,7 @@ import { POSSIBLE_MOVES } from "./config.js";
 import model from "./model.js";
 import resultPopupView from "./views/resultPopupView.js";
 import historyPopupView from "./views/historyPopupView.js";
+import paginationView from "./views/paginationView.js";
 import navigationView from "./views/navigationView.js";
 import boardView from "./views/boardView.js";
 import scoreView from "./views/scoreView.js";
@@ -10,14 +11,9 @@ import generator from "./helpers/generator.js";
 import helper from "./helpers/helper.js";
 
 // ***** DOM ELEMENTS ***** //
-const gameHistoryPopup = document.querySelector(".div-game-history-popup");
-const closePopupBtn = document.querySelector(".btn-close-popup");
 const paginationBtns = document.querySelectorAll(".btn-pagination");
-const scoreHistoryContainer = document.querySelector(".div-score-history-list-container");
-const scoreHistoryList = document.querySelector(".score-history-list");
 const currPageSpan = document.querySelector(".span-curr-page");
 const lastPageSpan = document.querySelector(".span-last-page");
-const popupOverlayDiv = document.querySelector(".div-popup-overlay");
 
 // ***** GLOBAL VARIABLES ***** //
 let currHistoryItem = 0;
@@ -25,6 +21,10 @@ let currHistoryItem = 0;
 // ***** FUNCTIONS ***** //
 const controlToggleHistory = function () {
     historyPopupView.togglePopup();
+};
+
+const controlLoadHistory = function () {
+    historyPopupView.initHistory(model.getStateValue("gameHistory"));
 };
 
 const controlResetStorage = function () {
@@ -76,9 +76,12 @@ const controlMarkSquare = function (square) {
         const currScore = +model.getStateValue(scoreKey);
         model.setStateValue(scoreKey, currScore + 1);
 
+        // Update scoreboard.
         scoreView.updateScoreBoard(currMove, model.getStateValue(scoreKey));
 
-        // updateGameHistory(currMove);
+        // Update history list.
+        historyPopupView.updateHistory(currMove);
+
         return;
     }
 
@@ -97,6 +100,8 @@ const controlMarkSquare = function (square) {
 };
 
 const initController = function () {
+    controlLoadHistory();
+
     resultPopupView.addEventNewGame(controlNewGame);
     historyPopupView.addEventClosePopup(controlToggleHistory);
     navigationView.addEventShowHistory(controlToggleHistory);
@@ -133,74 +138,6 @@ const scrollThroughGameHistory = function () {
         .scrollIntoView({ behavior: "smooth" });
 };
 
-const loadGameHistory = function () {
-    if (!localStorage.getItem("gameHistory")) return;
-
-    let listItemID = 0;
-    let listItem = generator.generateListItem(listItemID);
-    const gameHistory = localStorage.getItem("gameHistory");
-    if (gameHistory.length === 0) return;
-
-    scoreHistoryContainer.classList.remove("empty-container");
-    for (const { id, winner, date } of JSON.parse(gameHistory)) {
-        if (scoreHistoryList.children.length === 0) scoreHistoryList.appendChild(listItem);
-
-        const currInnerList = document.querySelector(`.li-${listItemID} .inner-score-history-list`);
-        currInnerList.appendChild(generator.generateInnerListItem(id, winner, date));
-
-        if (id % 5 === 0 || id === JSON.parse(gameHistory).length) {
-            scoreHistoryList.appendChild(listItem);
-            if (id === JSON.parse(gameHistory).length) break;
-
-            listItem = generator.generateListItem(id / 5);
-            scoreHistoryList.appendChild(listItem);
-            listItemID = id / 5;
-        }
-    }
-
-    lastPageSpan.textContent = scoreHistoryList.children.length;
-    currPageSpan.textContent = 1;
-};
-
-const updateGameHistory = function (winner) {
-    const totalListItems = scoreHistoryList.children.length;
-    const gameHistory = JSON.parse(localStorage.getItem("gameHistory")) ?? [];
-    const newUpdate = { id: gameHistory.length + 1, winner, date: new Date().getTime() };
-    const { id, date } = newUpdate;
-    let newItem;
-
-    if (totalListItems === 0) {
-        newItem = generator.generateListItem(0);
-        scoreHistoryList.appendChild(newItem);
-        const latestInnerList = document.querySelector(".li-0 .inner-score-history-list");
-        latestInnerList.appendChild(generator.generateInnerListItem(id, winner, date));
-        scoreHistoryContainer.classList.remove("empty-container");
-
-        lastPageSpan.textContent = scoreHistoryList.children.length;
-        currPageSpan.textContent = id;
-    } else {
-        const lastListItem = scoreHistoryList.children[totalListItems - 1];
-        const lastInnerList = document.querySelector(`.${lastListItem.classList[1]} .inner-score-history-list`);
-        const totalInnerItems = lastInnerList.children.length;
-
-        if (totalInnerItems === 5) {
-            const newItemID = +lastListItem.dataset.itemIndex + 1;
-            lastPageSpan.textContent = newItemID + 1;
-
-            newItem = generator.generateListItem(newItemID);
-            scoreHistoryList.appendChild(newItem);
-            const latestInnerList = document.querySelector(`.li-${newItemID} .inner-score-history-list`);
-            latestInnerList.appendChild(generator.generateInnerListItem(id, winner, date));
-        } else {
-            newItem = generator.generateInnerListItem(id, winner, date);
-            lastInnerList.appendChild(newItem);
-        }
-    }
-
-    gameHistory.push(newUpdate);
-    localStorage.setItem("gameHistory", JSON.stringify(gameHistory));
-};
-
 const resetLocalStorage = function () {
     localStorage.clear();
 
@@ -215,8 +152,3 @@ const resetLocalStorage = function () {
     scoreO = 0;
     scoreX = 0;
 };
-
-// ***** DOM ELEMENTS ***** //
-paginationBtns.forEach((btn) => {
-    btn.addEventListener("click", scrollThroughGameHistory);
-});
