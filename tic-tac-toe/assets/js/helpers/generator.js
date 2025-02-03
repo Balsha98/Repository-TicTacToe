@@ -1,4 +1,4 @@
-import helper from "./helper.js";
+import { formatGameDate } from "./helper.js";
 
 class Generator {
     generateListItem(itemIndex) {
@@ -34,7 +34,7 @@ class Generator {
         listItem.appendChild(itemDiv);
 
         const dateText = document.createElement("p");
-        dateText.textContent = helper.formatGameDate(date);
+        dateText.textContent = formatGameDate(date);
         listItem.appendChild(dateText);
 
         return listItem;

@@ -1,9 +1,5 @@
-class Helper {
-    formatGameDate(timestamp) {
-        return Intl.DateTimeFormat("en-US", {
-            dateStyle: "short",
-        }).format(timestamp);
-    }
-}
-
-export default new Helper();
+export const formatGameDate = function (timestamp) {
+    return Intl.DateTimeFormat("en-US", {
+        dateStyle: "short",
+    }).format(timestamp);
+};
