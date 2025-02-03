@@ -24,12 +24,23 @@ const controlToggleHistory = function () {
     historyPopupView.togglePopup();
 };
 
-const controlScrollHistory = function (currHistoryItem) {
+const controlScrollHistory = function (btn) {
     const totalHistoryItems = [...historyPopupView.getHistoryList().children];
 
     // Guard clause.
     if (totalHistoryItems.length === 0) return;
 
+    // Get button direction.
+    const direction = btn.classList[1].split("-")[1];
+    if (direction === "backward") {
+        if (paginationView.getCurrHistoryItem() === 0) return;
+    } else if (direction === "forward") {
+        if (paginationView.getCurrHistoryItem() === totalHistoryItems.length - 1) return;
+    }
+
+    paginationView.updateSpanCurrPage(paginationView.updateCurrHistoryItem(direction) + 1);
+
+    const currHistoryItem = paginationView.getCurrHistoryItem();
     const listToView = totalHistoryItems.find((list) => +list.dataset.itemIndex === currHistoryItem);
     listToView.scrollIntoView({ behavior: "smooth" });
 };

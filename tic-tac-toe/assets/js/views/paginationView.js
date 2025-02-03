@@ -4,36 +4,23 @@ class PaginationView {
     _spanLastPage = document.querySelector(".span-last-page");
     _currHistoryItem = 0;
 
-    scrollHistory(historyList) {
-        const direction = this.classList[1].split("-")[1];
-        const totalHistoryItems = [...historyList.children];
+    getCurrHistoryItem() {
+        return this._currHistoryItem;
+    }
 
-        // Guard clause.
-        if (totalHistoryItems.length === 0) return;
+    updateSpanCurrPage(pageNumber) {
+        this._spanCurrPage.textContent = pageNumber;
+    }
 
-        if (direction === "backward") {
-            if (currHistoryItem === 0) return;
-            currPageSpan.textContent = --currHistoryItem + 1;
-        } else if (direction === "forward") {
-            if (currHistoryItem === totalHistoryItems.length - 1) return;
-            currPageSpan.textContent = ++currHistoryItem + 1;
-        }
-
-        totalHistoryItems
-            .find((list) => +list.dataset.itemIndex === currHistoryItem)
-            .scrollIntoView({ behavior: "smooth" });
+    updateCurrHistoryItem(direction) {
+        if (direction === "backward") return --this._currHistoryItem;
+        return ++this._currHistoryItem;
     }
 
     addEventScrollHistory(handlerFunction) {
         this._btnPagination.forEach((btn) => {
             btn.addEventListener("click", function () {
-                if (direction === "backward") {
-                    if (currHistoryItem === 0) return;
-                    currPageSpan.textContent = --currHistoryItem + 1;
-                } else if (direction === "forward") {
-                    if (currHistoryItem === totalHistoryItems.length - 1) return;
-                    currPageSpan.textContent = ++currHistoryItem + 1;
-                }
+                handlerFunction(this);
             });
         });
     }
