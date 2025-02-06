@@ -2,12 +2,13 @@ class BoardView {
     _gameBoard = document.querySelector(".div-game-board-container");
     _btnStartGame = document.querySelector(".btn-start-game");
 
-    getGameBoard() {
-        return this._gameBoard;
-    }
-
     setCurrIcon(iconName) {
         this._gameBoard.querySelector(".icon-current-move").setAttribute("name", `${iconName}-outline`);
+    }
+
+    showGameBoard() {
+        this._btnStartGame.classList.add("lower-opacity");
+        this._gameBoard.classList.toggle("hide-right");
     }
 
     addEventStartGame(handlerFunction) {

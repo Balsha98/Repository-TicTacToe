@@ -399,7 +399,7 @@ html {
 }
 
 .leaderboard-header h2 {
-    font-size: 3.2rem;
+    font-size: 3rem;
 }
 
 .leaderboard-header p {
@@ -462,7 +462,7 @@ html {
     opacity: 0.5;
 }
 
-.hide {
+.lower-opacity {
     opacity: 0 !important;
     z-index: -1 !important;
 }
@@ -475,8 +475,12 @@ html {
     display: flex;
     flex-direction: column;
     gap: 1.6rem;
-    transform: translate(150%, -50%);
+    transform: translate(-50%, -50%);
     transition: transform 1s;
+}
+
+.hide-right {
+    transform: translate(150%, -50%) !important;
 }
 
 /* GAME-BOARD HEADER */

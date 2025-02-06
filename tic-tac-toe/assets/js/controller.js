@@ -59,9 +59,7 @@ const controlClearStorage = function () {
 };
 
 const controlStartGame = function () {
-    console.log(this);
-    boardView.getGameBoard().style = "transform: translate(-50%, -50%)";
-    this.classList.add("hide");
+    boardView.showGameBoard();
 };
 
 const controlMarkSquare = function (square) {
