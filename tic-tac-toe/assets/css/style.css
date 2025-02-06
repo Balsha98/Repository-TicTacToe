@@ -9,7 +9,7 @@
     --gradient-indigo: #91a7ff;
     --to-left-top-gradient: linear-gradient(to left top, var(--gradient-red), var(--gradient-indigo));
     --to-right-bottom-gradient: linear-gradient(to right bottom, var(--gradient-red), var(--gradient-indigo));
-    --shadow-sm: rgba(0, 0, 0, 0.2);
+    --shadow-black-sm: rgba(0, 0, 0, 0.2);
 }
 
 /* GENERAL SELECTORS */
@@ -23,6 +23,7 @@
 
 html {
     font-size: 10px;
+    overflow: hidden;
 }
 
 /* PAGE BODY */
@@ -293,7 +294,7 @@ html {
     left: 0;
     width: 100%;
     height: 100vh;
-    background-color: var(--shadow-sm);
+    background-color: var(--shadow-black-sm);
     backdrop-filter: blur(0.8rem);
     transition: transform 1s;
     z-index: 1;
@@ -428,6 +429,40 @@ html {
     font-size: 4.4rem;
 }
 
+/* SECTION GAME-BOARD */
+.section-game-board {
+    position: relative;
+}
+
+/* START GAME CONTAINER */
+.div-game-btn-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    padding: 1.2rem;
+    background-color: var(--white);
+    border-radius: 0.4rem;
+    transform: translate(-50%, -50%);
+}
+
+.div-game-btn-container button {
+    all: unset;
+    display: inline-block;
+    width: 18rem;
+    padding: 0.8rem 0;
+    font-size: 2rem;
+    font-weight: 500;
+    text-align: center;
+    background: var(--to-right-bottom-gradient);
+    border-radius: 0.4rem;
+    transition: opacity 0.5s;
+    cursor: pointer;
+}
+
+.div-game-btn-container button:hover {
+    opacity: 0.5;
+}
+
 /* GAME-BOARD CONTAINER DIV */
 .div-game-board-container {
     position: absolute;
@@ -436,7 +471,7 @@ html {
     display: flex;
     flex-direction: column;
     gap: 1.6rem;
-    transform: translate(-50%, -50%);
+    transform: translate(150%, -50%);
 }
 
 /* GAME-BOARD HEADER */

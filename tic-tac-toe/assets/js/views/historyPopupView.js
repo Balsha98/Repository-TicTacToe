@@ -43,7 +43,6 @@ class HistoryPopupView extends PopupView {
     }
 
     updateHistory(newUpdate) {
-        console.log(this._historyList);
         const totalListItems = this._historyList.children.length;
         const { id, icon, date } = newUpdate;
 
