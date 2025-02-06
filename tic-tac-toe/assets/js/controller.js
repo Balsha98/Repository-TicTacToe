@@ -58,6 +58,8 @@ const controlClearStorage = function () {
     });
 };
 
+const controlStartGame = function () {};
+
 const controlMarkSquare = function (square) {
     // Guard clause.
     if (model.getStateValue("gameOver")) return;
@@ -117,6 +119,7 @@ const initController = function () {
     paginationView.addEventScrollHistory(controlScrollHistory);
     navigationView.addEventShowHistory(controlToggleHistory);
     navigationView.addEventClearStorage(controlClearStorage);
+    boardView.addEventStartGame(controlStartGame);
     boardView.addEventMarkSquare(controlMarkSquare);
 
     const scores = [];

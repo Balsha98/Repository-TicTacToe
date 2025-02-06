@@ -1,8 +1,13 @@
 class BoardView {
     _gameBoard = document.querySelector(".div-game-board-container");
+    _btnStartGame = document.querySelector(".btn-start-game");
 
     setCurrIcon(iconName) {
         this._gameBoard.querySelector(".icon-current-move").setAttribute("name", `${iconName}-outline`);
+    }
+
+    addEventStartGame(handlerFunction) {
+        this._btnStartGame.addEventListener("click", handlerFunction);
     }
 
     addEventMarkSquare(handlerFunction) {
