@@ -452,7 +452,7 @@ html {
     font-weight: 500;
     text-align: center;
     background: var(--to-right-bottom-gradient);
-    box-shadow: 0 0.8rem 0.8rem var(--shadow-black-sm);
+    box-shadow: 0 0.4rem 0.8rem var(--shadow-black-sm);
     border-radius: 0.4rem;
     transition: opacity 0.5s;
     cursor: pointer;
