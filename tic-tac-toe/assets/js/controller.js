@@ -47,7 +47,10 @@ const controlScrollHistory = function (btn) {
 
 const controlClearStorage = function () {
     model.clearLocalStorage();
+    model.setStateValue("currMove", "x");
     model.setStateValue("gameHistory", []);
+    model.resetGameFieldsArray();
+
     historyPopupView.clearHistoryList();
     POSSIBLE_MOVES.forEach((move) => {
         // Update the model.
@@ -56,6 +59,9 @@ const controlClearStorage = function () {
         // Update the score view.
         scoreView.updateScoreBoard(move, 0);
     });
+
+    boardView.setCurrIcon(model.getRelatedIcon());
+    boardView.resetGameSquares();
 };
 
 const controlStartGame = function () {
