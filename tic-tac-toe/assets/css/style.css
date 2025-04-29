@@ -454,12 +454,13 @@ html {
     background: var(--to-right-bottom-gradient);
     box-shadow: 0 0.4rem 0.8rem var(--shadow-black-sm);
     border-radius: 0.4rem;
-    transition: opacity 0.5s;
+    transition: all 0.5s;
     cursor: pointer;
 }
 
 .div-game-btn-container button:hover {
-    opacity: 0.5;
+    box-shadow: 0 0.8rem 2.4rem var(--shadow-black-sm);
+    transform: scale(1.1);
 }
 
 .lower-opacity {
