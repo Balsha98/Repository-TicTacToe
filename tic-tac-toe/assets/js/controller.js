@@ -77,13 +77,13 @@ const controlMarkSquare = function (square) {
 
     const currMove = model.getStateValue("currMove");
     const currIcon = model.getRelatedIcon();
-    square.innerHTML = `
-        <ion-icon name="${currIcon}-outline"></ion-icon>
-    `;
+    
+    square.innerHTML = `<ion-icon name="${currIcon}-outline"></ion-icon> `;
 
     // Get clicked square coordinates.
     const { row, col } = square.dataset;
     model.markField(row, col, currMove);
+    
     const gameFields = model.getStateValue("fields");
 
     // Check for a winner.
@@ -131,6 +131,7 @@ const initController = function () {
     boardView.addEventMarkSquare(controlMarkSquare);
 
     const scores = [];
+
     POSSIBLE_MOVES.forEach((move) => {
         scores.push(model.getStateValue(`score${move.toUpperCase()}`));
     });

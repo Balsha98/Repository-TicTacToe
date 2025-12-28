@@ -54,6 +54,7 @@ class Checker {
 
     checkForTie(fields) {
         let counter = 0;
+        
         fields.forEach((row) => {
             if (!row.includes(1)) counter++;
         });
