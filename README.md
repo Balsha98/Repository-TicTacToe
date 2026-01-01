@@ -100,7 +100,3 @@ If you enjoyed this project or have any questions, feel free to reach out!
 [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Balsha98)
 
 ⭐ If you found this project helpful, please consider giving it a star!
-
----
-
-Made with HTML5, CSS3, JavaScript, & ❤️!
