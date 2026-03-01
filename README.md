@@ -4,13 +4,13 @@ A classic Tic-Tac-Toe game with persistent game history tracking. Challenge your
 
 ## Features
 
--   **Classic Gameplay** - Traditional 3x3 Tic-Tac-Toe experience.
--   **Game History** - View results of all games played during your session.
--   **Persistent Storage** - Game history saved using localStorage.
--   **Live Scoreboard** - Real-time tracking of wins, losses, and draws.
--   **Split-Screen Layout** - Scoreboard on the left, game board on the right.
--   **Reset Functionality** - Clear game history with a single button click.
--   **Clean Interface** - Simple and intuitive design.
+- **Classic Gameplay** - Traditional 3x3 Tic-Tac-Toe experience.
+- **Game History** - View results of all games played during your session.
+- **Persistent Storage** - Game history saved using localStorage.
+- **Live Scoreboard** - Real-time tracking of wins, losses, and draws.
+- **Split-Screen Layout** - Scoreboard on the left, game board on the right.
+- **Reset Functionality** - Clear game history with a single button click.
+- **Clean Interface** - Simple and intuitive design.
 
 ## Demo
 
@@ -18,11 +18,11 @@ A classic Tic-Tac-Toe game with persistent game history tracking. Challenge your
 
 ## Tech Stack
 
--   **HTML5** - Structure & Content
--   **CSS3** - Styling & Layout
--   **JavaScript** - Game Logic & localStorage Management
--   **LocalStorage** - Persistent Game History Storage
--   **Netlify** - Hosting & Deployment
+- **HTML5** - Structure & Content
+- **CSS3** - Styling & Layout
+- **JavaScript** - Game Logic & localStorage Management
+- **LocalStorage** - Persistent Game History Storage
+- **Netlify** - Hosting & Deployment
 
 ## Installation
 
@@ -86,15 +86,16 @@ Repository-TicTacToe/
 
 The game uses localStorage to persist data across sessions:
 
--   Game results are automatically saved after each match.
--   Scoreboard updates in real-time as games are played.
--   History remains available even after closing the browser.
--   Reset button clears all stored data and resets the scoreboard.
+- Game results are automatically saved after each match.
+- Scoreboard updates in real-time as games are played.
+- History remains available even after closing the browser.
+- Reset button clears all stored data and resets the scoreboard.
 
 ## Let's Connect
 
 If you enjoyed this project or have any questions, feel free to reach out!
 
+[![Portfolio](https://img.shields.io/badge/Portfolio-FF5722?style=for-the-badge&logo=todoist&logoColor=white)](https://bazovich.dev)
 [![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:balsa.bazovic@gmail.com)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/balsha-bazovich)
 [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Balsha98)
